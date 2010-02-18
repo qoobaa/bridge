@@ -8,7 +8,7 @@ begin
   Jeweler::Tasks.new do |gem|
     gem.name = "bridge"
     gem.summary = %Q{Contract bridge utilities}
-    gem.description = %Q{Useful contract bridge utilities - deal generator, id to deal and deal to id conversion.}
+    gem.description = %Q{Useful contract bridge utilities - deal generator, id to deal and deal to id conversion}
     gem.email = "qoobaa+github@gmail.com"
     gem.homepage = "http://github.com/qoobaa/bridge"
     gem.authors = ["Jakub Kuźma"]
