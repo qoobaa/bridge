@@ -5,7 +5,7 @@ module Bridge
 
   # Array with cards in the bridge deck (AKQJT98765432, four suits)
   DECK = %w(S H D C).inject([]) do |d, s|
-    d += %w(A K Q J T 9 8 7 6 5 4 3 2).map { |c| c + s }
+    d += %w(A K Q J T 9 8 7 6 5 4 3 2).map { |c| s + c }
   end
 
   # Converts given id to deal (hash)
