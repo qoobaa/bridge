@@ -22,7 +22,9 @@ module Bridge
     # ==== Example
     #   Bridge::Deal.new(:n => ["HA", ...], :s => ["SA"], ...)
     def initialize(hands)
-      hands.each { |hand, cards| self[hand] = cards }
+      hands.each do |hand, cards|
+        self[hand] = cards.map { |c| Card.new(c) }
+      end
     end
 
     # Converts given id to deal
@@ -30,6 +32,7 @@ module Bridge
       raise ArgumentError, "invalid deal id: #{id}" unless Bridge.deal_id?(id)
       n = []; e = []; s = []; w = []; k = DEALS
       DECK.each_with_index do |card, i|
+        card = Card.new(card)
         x = k * (13 - n.size) / (52 - i)
         if id < x
           n << card
@@ -93,13 +96,17 @@ module Bridge
       if DIRECTIONS.all? { |d| self[d] && self[d].size == 13 }
         cards = (n + e + s + w).uniq
         if cards.size == 52
-          cards.all? { |card| Bridge.card?(card) }
+          cards.all? { |card| Bridge.card?(card.to_s) }
         else
           false
         end
       else
         false
       end
+    end
+
+    def inspect
+      { "N" => n, "E" => e, "S" => s, "W" => w }.inspect
     end
 
     private

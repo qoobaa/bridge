@@ -1,3 +1,4 @@
+require "bridge/card"
 require "bridge/deal"
 
 module Bridge
@@ -43,5 +44,9 @@ module Bridge
 
   def self.card?(string)
     DECK.include?(string)
+  end
+
+  def self.compare_cards(first, second)
+    DECK.index(second) <=> DECK.index(first)
   end
 end
