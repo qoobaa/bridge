@@ -1,51 +1,75 @@
 module Bridge
-  module Deal
-    # Converts given id to deal (hash)
-    def self.id_to_deal(id)
-      deal = { "N" => [], "E" => [], "S" => [], "W" => [] }
-      k = DEALS
+
+  # Class representing bridge deal
+  class Deal
+    include Comparable
+
+    attr_reader :n, :e, :s, :w
+
+    # Returns cards of given direction
+    def [](direction)
+      must_be_direction!(direction)
+      send("#{direction.to_s.downcase}")
+    end
+
+    # Compares the deal with given deal
+    def <=>(other)
+      id <=> other.id
+    end
+
+    # Creates new deal object with cards given in hash of directions
+    #
+    # ==== Example
+    #   Bridge::Deal.new(:n => ["HA", ...], :s => ["SA"], ...)
+    def initialize(hands)
+      hands.each { |hand, cards| self[hand] = cards }
+    end
+
+    # Converts given id to deal
+    def self.from_id(id)
+      raise ArgumentError, "invalid deal id: #{id}" unless Bridge.deal_id?(id)
+      n = []; e = []; s = []; w = []; k = DEALS
       DECK.each_with_index do |card, i|
-        x = k * (13 - deal["N"].size) / (52 - i)
+        x = k * (13 - n.size) / (52 - i)
         if id < x
-          deal["N"] << card
+          n << card
         else
           id -= x
-          x = k * (13 - deal["E"].size) / (52 - i)
+          x = k * (13 - e.size) / (52 - i)
           if id < x
-            deal["E"] << card
+            e << card
           else
             id -= x
-            x = k * (13 - deal["S"].size) / (52 - i)
+            x = k * (13 - s.size) / (52 - i)
             if id < x
-              deal["S"] << card
+              s << card
             else
               id -= x
-              x = k * (13 - deal["W"].size) / (52 - i)
-              deal["W"] << card
+              x = k * (13 - w.size) / (52 - i)
+              w << card
             end
           end
         end
         k = x
       end
-      deal
+      new(:n => n, :e => e, :s => s, :w => w)
     end
 
     # Converts given deal (hash) to id
-    def self.deal_to_id(d)
-      k = DEALS; id = 0
-      deal = { "N" => d["N"].dup, "E" => d["E"].dup, "S" => d["S"].dup, "W" => d["W"].dup }
+    def id
+      k = DEALS; id = 0; n = self.n.dup; e = self.e.dup; s = self.s.dup; w = self.w.dup
       DECK.each_with_index do |card, i|
-        x = k * deal["N"].size / (52 - i)
-        unless deal["N"].delete(card)
+        x = k * n.size / (52 - i)
+        unless n.delete(card)
           id += x
-          x = k * deal["E"].size / (52 - i)
-          unless deal["E"].delete(card)
+          x = k * e.size / (52 - i)
+          unless e.delete(card)
             id += x
-            x = k * deal["S"].size / (52 - i)
-            unless deal["S"].delete(card)
+            x = k * s.size / (52 - i)
+            unless s.delete(card)
               id += x
-              x = k * deal["W"].size / (52 - i)
-              deal["W"].delete(card)
+              x = k * w.size / (52 - i)
+              w.delete(card)
             end
           end
         end
@@ -55,32 +79,38 @@ module Bridge
     end
 
     # Returns a random deal id
-    def self.random_deal_id
+    def self.random_id
       rand(DEALS)
     end
 
     # Returns a random deal
-    def self.random_deal
-      id_to_deal(random_deal_id)
+    def self.random
+      from_id(random_id)
     end
 
-    # Checks if the given number is valid deal id
-    def self.deal_id?(n)
-      (0..DEALS - 1).include?(n)
-    end
-
-    # Checks if the given hash is valid deal
-    def self.deal?(h)
-      if ["N", "E", "S", "W"].all? { |s| h[s] && h[s].size == 13 }
-        cards = (h["N"] + h["E"] + h["S"] + h["W"]).uniq
+    # Checks if the deal is a valid deal
+    def valid?
+      if DIRECTIONS.all? { |d| self[d] && self[d].size == 13 }
+        cards = (n + e + s + w).uniq
         if cards.size == 52
-          cards.all? { |card| DECK.include?(card) }
+          cards.all? { |card| Bridge.card?(card) }
         else
           false
         end
       else
         false
       end
+    end
+
+    private
+
+    def must_be_direction!(string)
+      raise ArgumentError, "invalid direction: #{string}" unless Bridge.direction?(string.to_s.upcase)
+    end
+
+    def []=(direction, cards)
+      must_be_direction!(direction)
+      instance_variable_set("@#{direction.to_s.downcase}", cards)
     end
   end
 end

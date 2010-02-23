@@ -32,4 +32,16 @@ module Bridge
 
   # All possible bids (including contracts, modifiers and pass)
   BIDS = CONTRACTS + MODIFIERS + [PASS]
+
+  def self.direction?(string)
+    DIRECTIONS.include?(string)
+  end
+
+  def self.deal_id?(integer)
+    (0..DEALS - 1).include?(integer)
+  end
+
+  def self.card?(string)
+    DECK.include?(string)
+  end
 end
