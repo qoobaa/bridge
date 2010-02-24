@@ -1,5 +1,6 @@
 require "bridge/card"
 require "bridge/deal"
+require "bridge/bid"
 
 module Bridge
   # Number of possible deals in bridge
@@ -47,6 +48,44 @@ module Bridge
   end
 
   def self.compare_cards(first, second)
+    # DECK has reversed order
     DECK.index(second) <=> DECK.index(first)
   end
+
+  def self.compare_contracts(first, second)
+    CONTRACTS.index(first) <=> CONTRACTS.index(second)
+  end
+
+  def self.pass?(string)
+    PASS == string
+  end
+
+  def self.double?(string)
+    DOUBLE == string
+  end
+
+  def self.redouble?(string)
+    REDOUBLE == string
+  end
+
+  def self.modifier?(string)
+    MODIFIERS.include?(string)
+  end
+
+  def self.contract?(string)
+    CONTRACTS.include?(string)
+  end
+
+  def self.bid?(string)
+    BIDS.include?(string)
+  end
+end
+
+# Constructor shortcuts
+def Bid(string)
+  Bridge::Bid.new(string)
+end
+
+def Card(string)
+  Bridge::Card.new(string)
 end

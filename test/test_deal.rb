@@ -5,10 +5,10 @@ class TestDeal < Test::Unit::TestCase
     id = 0
     deal = Bridge::Deal.from_id(id)
     assert deal.valid?
-    assert_equal %w(SA SK SQ SJ ST S9 S8 S7 S6 S5 S4 S3 S2), deal.n
-    assert_equal %w(HA HK HQ HJ HT H9 H8 H7 H6 H5 H4 H3 H2), deal.e
-    assert_equal %w(DA DK DQ DJ DT D9 D8 D7 D6 D5 D4 D3 D2), deal.s
-    assert_equal %w(CA CK CQ CJ CT C9 C8 C7 C6 C5 C4 C3 C2), deal.w
+    assert_equal %w(SA SK SQ SJ ST S9 S8 S7 S6 S5 S4 S3 S2).map { |c| Card(c) }, deal.n
+    assert_equal %w(HA HK HQ HJ HT H9 H8 H7 H6 H5 H4 H3 H2).map { |c| Card(c) }, deal.e
+    assert_equal %w(DA DK DQ DJ DT D9 D8 D7 D6 D5 D4 D3 D2).map { |c| Card(c) }, deal.s
+    assert_equal %w(CA CK CQ CJ CT C9 C8 C7 C6 C5 C4 C3 C2).map { |c| Card(c) }, deal.w
     assert_equal id, deal.id
   end
 
@@ -16,10 +16,10 @@ class TestDeal < Test::Unit::TestCase
     id = Bridge::DEALS - 1
     deal = Bridge::Deal.from_id(id)
     assert deal.valid?
-    assert_equal %w(CA CK CQ CJ CT C9 C8 C7 C6 C5 C4 C3 C2), deal.n
-    assert_equal %w(DA DK DQ DJ DT D9 D8 D7 D6 D5 D4 D3 D2), deal.e
-    assert_equal %w(HA HK HQ HJ HT H9 H8 H7 H6 H5 H4 H3 H2), deal.s
-    assert_equal %w(SA SK SQ SJ ST S9 S8 S7 S6 S5 S4 S3 S2), deal.w
+    assert_equal %w(CA CK CQ CJ CT C9 C8 C7 C6 C5 C4 C3 C2).map { |c| Card(c) }, deal.n
+    assert_equal %w(DA DK DQ DJ DT D9 D8 D7 D6 D5 D4 D3 D2).map { |c| Card(c) }, deal.e
+    assert_equal %w(HA HK HQ HJ HT H9 H8 H7 H6 H5 H4 H3 H2).map { |c| Card(c) }, deal.s
+    assert_equal %w(SA SK SQ SJ ST S9 S8 S7 S6 S5 S4 S3 S2).map { |c| Card(c) }, deal.w
     assert_equal id, deal.id
   end
 

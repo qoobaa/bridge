@@ -42,7 +42,7 @@ module Bridge
     end
 
     def hash
-      @card.hash
+      card.hash
     end
 
     def coerce(other)
@@ -54,11 +54,7 @@ module Bridge
     end
 
     def to_s
-      @card
-    end
-
-    def to_str
-      @card
+      card
     end
   end
 end
