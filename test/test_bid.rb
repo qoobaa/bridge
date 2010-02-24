@@ -96,4 +96,12 @@ class TestBid < Test::Unit::TestCase
   test "PASS and XX are not equal" do
     assert_not_equal Bridge::Bid.new("PASS"), Bridge::Bid.new("XX")
   end
+
+  test "1S returns S trump" do
+    assert_equal "S", Bridge::Bid.new("1S").trump
+  end
+
+  test "5NT returns nil trump" do
+    assert_nil Bridge::Bid.new("5NT").trump
+  end
 end

@@ -88,4 +88,8 @@ module Bridge
   def self.bid?(string)
     BIDS.include?(string)
   end
+
+  def self.trump?(string)
+    TRUMPS.include?(string)
+  end
 end

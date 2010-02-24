@@ -20,6 +20,10 @@ module Bridge
       bid[1..-1] if contract?
     end
 
+    def trump
+      suit if Bridge.trump?(suit)
+    end
+
     def pass?
       Bridge.pass?(bid)
     end
