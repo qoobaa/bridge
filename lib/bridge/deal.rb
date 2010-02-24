@@ -81,6 +81,11 @@ module Bridge
       id
     end
 
+    # Returns the direction that owns the card
+    def owner(card)
+      DIRECTIONS.find { |direction| self[direction].include?(card) }
+    end
+
     # Returns a random deal id
     def self.random_id
       rand(DEALS)
@@ -119,9 +124,5 @@ module Bridge
       must_be_direction!(direction)
       instance_variable_set("@#{direction.to_s.downcase}", cards)
     end
-  end
-
-  def self.Deal(deal)
-    Deal.new(deal)
   end
 end

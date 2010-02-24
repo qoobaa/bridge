@@ -84,4 +84,19 @@ class TestDeal < Test::Unit::TestCase
       Bridge::Deal.from_id(-1)
     end
   end
+
+  test "owner returns correct direction" do
+    deal = Bridge::Deal.new({ "N" => ["SK", "S9", "S7", "S6", "S4", "S2", "HA", "HJ", "H2", "D7", "D2", "C6", "C3"],
+                              "E" => ["SA", "SJ", "ST", "H3", "DA", "DK", "DT", "D9", "D8", "D5", "D4", "CK", "CJ"],
+                              "S" => ["S8", "S5", "S3", "HK", "HQ", "HT", "H8", "H4", "DQ", "D3", "CQ", "C4", "C2"],
+                              "W" => ["SQ", "H9", "H7", "H6", "H5", "DJ", "D6", "CA", "CT", "C9", "C8", "C7", "C5"] })
+    assert_equal "N", deal.owner("SK")
+    assert_equal "N", deal.owner("C3")
+    assert_equal "E", deal.owner("SJ")
+    assert_equal "E", deal.owner("CK")
+    assert_equal "S", deal.owner("S3")
+    assert_equal "S", deal.owner("CQ")
+    assert_equal "W", deal.owner("H6")
+    assert_equal "W", deal.owner("C9")
+  end
 end
