@@ -81,10 +81,6 @@ class TestBid < Test::Unit::TestCase
     assert_false Bridge::Bid.new("1S") == Bridge::Bid.new("1H")
   end
 
-  test "initialize works using shortcut" do
-    Bid("pass")
-  end
-
   test "comparison of PASS and 1S raises an error" do
     assert_raises(ArgumentError) do
       Bridge::Bid.new("PASS") > Bridge::Bid.new("1S")

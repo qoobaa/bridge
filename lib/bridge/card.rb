@@ -57,4 +57,8 @@ module Bridge
       card
     end
   end
+
+  def self.Card(card)
+    Card.new(card)
+  end
 end

@@ -120,4 +120,8 @@ module Bridge
       instance_variable_set("@#{direction.to_s.downcase}", cards)
     end
   end
+
+  def self.Deal(deal)
+    Deal.new(deal)
+  end
 end

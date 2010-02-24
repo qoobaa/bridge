@@ -80,12 +80,3 @@ module Bridge
     BIDS.include?(string)
   end
 end
-
-# Constructor shortcuts
-def Bid(string)
-  Bridge::Bid.new(string)
-end
-
-def Card(string)
-  Bridge::Card.new(string)
-end

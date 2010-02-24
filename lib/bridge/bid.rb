@@ -87,4 +87,8 @@ module Bridge
       bid.inspect
     end
   end
+
+  def self.Bid(bid)
+    Bid.new(bid)
+  end
 end

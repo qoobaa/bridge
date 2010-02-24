@@ -30,4 +30,8 @@ class TestCard < Test::Unit::TestCase
       Bridge::Card.new("1H")
     end
   end
+
+  test "ST is lower than SJ" do
+    assert Bridge::Card.new("ST") < Bridge::Card.new("SJ")
+  end
 end
