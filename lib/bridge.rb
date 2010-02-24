@@ -6,10 +6,19 @@ module Bridge
   # Number of possible deals in bridge
   DEALS = 53_644_737_765_488_792_839_237_440_000
 
+  # Card values - from A to 2
+  CARD_VALUES = %w(A K Q J T 9 8 7 6 5 4 3 2)
+
+  # Trumps
+  TRUMPS = %w(S H D C)
+
+  # No trump string
+  NO_TRUMP = "NT"
+
   # Array with card strings in the bridge deck (AKQJT98765432, four
   # suits). Contains "SA", "HT", etc.
-  DECK = %w(S H D C).inject([]) do |d, s|
-    d += %w(A K Q J T 9 8 7 6 5 4 3 2).map { |c| s + c }
+  DECK = TRUMPS.inject([]) do |d, s|
+    d += CARD_VALUES.map { |c| s + c }
   end
 
   # Direction strings "N", "E", "S" and "W"
@@ -17,7 +26,7 @@ module Bridge
 
   # Possible contracts in ascending order. Contains "1C", "6NT", etc.
   CONTRACTS = %w(1 2 3 4 5 6 7).inject([]) do |b, l|
-    b += %w(C D H S NT).map { |s| l + s }
+    b += (TRUMPS.reverse + [NO_TRUMP]).map { |s| l + s }
   end
 
   # Pass string
