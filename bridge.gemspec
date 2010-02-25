@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{bridge}
-  s.version = "0.0.10"
+  s.version = "0.0.11"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jakub Kuźma"]
-  s.date = %q{2010-02-24}
+  s.date = %q{2010-02-25}
   s.description = %q{Useful contract bridge utilities - deal generator, id to deal and deal to id conversion}
   s.email = %q{qoobaa+github@gmail.com}
   s.extra_rdoc_files = [
@@ -28,11 +28,13 @@ Gem::Specification.new do |s|
      "lib/bridge/bid.rb",
      "lib/bridge/card.rb",
      "lib/bridge/deal.rb",
+     "lib/bridge/trick.rb",
      "test/helper.rb",
      "test/test_bid.rb",
      "test/test_bridge.rb",
      "test/test_card.rb",
-     "test/test_deal.rb"
+     "test/test_deal.rb",
+     "test/test_trick.rb"
   ]
   s.homepage = %q{http://github.com/qoobaa/bridge}
   s.rdoc_options = ["--charset=UTF-8"]
@@ -42,6 +44,7 @@ Gem::Specification.new do |s|
   s.test_files = [
     "test/test_bridge.rb",
      "test/test_bid.rb",
+     "test/test_trick.rb",
      "test/test_card.rb",
      "test/test_deal.rb",
      "test/helper.rb"
