@@ -1,6 +1,7 @@
+require "bridge/bid"
 require "bridge/card"
 require "bridge/deal"
-require "bridge/bid"
+require "bridge/trick"
 
 module Bridge
   # Number of possible deals in bridge
