@@ -12,27 +12,27 @@ class TestTrick < Test::Unit::TestCase
   end
 
   test "the highest H card is the winner in S game H trick and single suit" do
-    trick = Bridge::Trick.new("H2", "H5", "H4", "H3", :trump => "S")
-    assert_equal Bridge::Card.new("H5"), trick.winner
+    trick = Bridge::Trick.new("H2", "H5", "H4", "H3")
+    assert_equal Bridge::Card.new("H5"), trick.winner("S")
   end
 
   test "the highest H card is the winner in S game H trick and multiple suits" do
-    trick = Bridge::Trick.new("H2", "D5", "C4", "H3", :trump => "S")
-    assert_equal Bridge::Card.new("H3"), trick.winner
+    trick = Bridge::Trick.new("H2", "D5", "C4", "H3")
+    assert_equal Bridge::Card.new("H3"), trick.winner("S")
   end
 
   test "the only trump is the winner in S game H trick and multiple suits" do
-    trick = Bridge::Trick.new("H2", "D5", "S2", "H3", :trump => "S")
-    assert_equal Bridge::Card.new("S2"), trick.winner
+    trick = Bridge::Trick.new("H2", "D5", "S2", "H3")
+    assert_equal Bridge::Card.new("S2"), trick.winner("S")
   end
 
   test "the highest trump is the winner in S game H trick and multiple suits" do
-    trick = Bridge::Trick.new("H2", "SA", "S2", "H3", :trump => "S")
-    assert_equal Bridge::Card.new("SA"), trick.winner
+    trick = Bridge::Trick.new("H2", "SA", "S2", "H3")
+    assert_equal Bridge::Card.new("SA"), trick.winner("S")
   end
 
   test "the highest trump is the winner in S game S trick and multiple suits" do
-    trick = Bridge::Trick.new("S2", "HA", "CA", "DA", :trump => "S")
-    assert_equal Bridge::Card.new("S2"), trick.winner
+    trick = Bridge::Trick.new("S2", "HA", "CA", "DA")
+    assert_equal Bridge::Card.new("S2"), trick.winner("S")
   end
 end

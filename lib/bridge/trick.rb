@@ -1,16 +1,14 @@
 module Bridge
   class Trick
-    attr_reader :cards, :trump, :suit
+    attr_reader :cards, :suit
 
     def initialize(*args)
-      options = args.pop if args.last.is_a?(Hash)
-      @cards = args.flatten.map { |s| Bridge::Card.new(s.to_s) }
+      @cards = args.flatten.map { |c| Bridge::Card.new(c.to_s) }
       @suit = @cards.first.suit
-      @trump = options && options[:trump]
     end
 
-    def winner
-      winner_in_suit(@trump) || winner_in_suit(@suit)
+    def winner(trump = nil)
+      winner_in_suit(trump) || winner_in_suit(@suit)
     end
 
     private
