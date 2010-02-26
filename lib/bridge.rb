@@ -1,6 +1,7 @@
 require "bridge/bid"
 require "bridge/card"
 require "bridge/deal"
+require "bridge/score"
 require "bridge/trick"
 
 module Bridge
@@ -48,6 +49,12 @@ module Bridge
 
   # All possible bids (including contracts, modifiers and pass)
   BIDS = CONTRACTS + MODIFIERS + [PASS]
+
+  # 2 sides
+  SIDES = %w{NS EW}
+
+  # All possible vullnerabilites
+  VULNERABILITIES = %w{BOTH NONE} + SIDES
 
   def self.direction?(string)
     DIRECTIONS.include?(string)
