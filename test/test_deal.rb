@@ -12,6 +12,16 @@ class TestDeal < Test::Unit::TestCase
     assert_equal id, deal.id
   end
 
+  test "first deal hcp" do
+    deal = Bridge::Deal.from_id(0)
+    assert_equal 10, deal.hcp("N")
+    assert_equal 10, deal.hcp("E")
+    assert_equal 10, deal.hcp("S")
+    assert_equal 10, deal.hcp("W")
+    assert_equal 20, deal.hcp("NS")
+    assert_equal 20, deal.hcp("EW")
+  end
+
   test "last deal conversion" do
     id = Bridge::DEALS - 1
     deal = Bridge::Deal.from_id(id)
@@ -21,6 +31,16 @@ class TestDeal < Test::Unit::TestCase
     assert_equal %w(HA HK HQ HJ HT H9 H8 H7 H6 H5 H4 H3 H2).map { |c| Bridge::Card.new(c) }, deal.s
     assert_equal %w(SA SK SQ SJ ST S9 S8 S7 S6 S5 S4 S3 S2).map { |c| Bridge::Card.new(c) }, deal.w
     assert_equal id, deal.id
+  end
+
+  test "last deal hcp" do
+    deal = Bridge::Deal.from_id(Bridge::DEALS - 1)
+    assert_equal 10, deal.hcp("N")
+    assert_equal 10, deal.hcp("E")
+    assert_equal 10, deal.hcp("S")
+    assert_equal 10, deal.hcp("W")
+    assert_equal 20, deal.hcp("NS")
+    assert_equal 20, deal.hcp("EW")
   end
 
   test "deal no 1 000 000 000 000" do

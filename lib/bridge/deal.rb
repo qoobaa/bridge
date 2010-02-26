@@ -114,6 +114,19 @@ module Bridge
       { "N" => n, "E" => e, "S" => s, "W" => w }.inspect
     end
 
+    def honour_card_points(side = nil)
+      hash = DIRECTIONS.inject({}) do |h, direction|
+        h[direction] = self[direction].inject(0) { |sum, card| sum += card.honour_card_points }
+        h
+      end
+      if side
+        side.to_s.upcase.split("").inject(0) { |sum, direction| sum += hash[direction] }
+      else
+        hash
+      end
+    end
+    alias :hcp :honour_card_points
+
     private
 
     def must_be_direction!(string)

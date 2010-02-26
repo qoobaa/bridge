@@ -104,4 +104,24 @@ class TestBid < Test::Unit::TestCase
   test "5NT returns nil trump" do
     assert_nil Bridge::Bid.new("5NT").trump
   end
+
+  test "1H is a major bid" do
+    assert Bridge::Bid.new("1H").major?
+  end
+
+  test "5S is a major bid" do
+    assert Bridge::Bid.new("5S").major?
+  end
+
+  test "2C is a minor bid" do
+    assert Bridge::Bid.new("2C").minor?
+  end
+
+  test "6D is a minor bid" do
+    assert Bridge::Bid.new("6D").minor?
+  end
+
+  test "1NT is a nt bid" do
+    assert Bridge::Bid.new("1NT").nt?
+  end
 end
