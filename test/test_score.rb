@@ -79,6 +79,8 @@ class TestScorePoints < Test::Unit::TestCase
     assert_equal 500, score.game_bonus
     score = Bridge::Score.new(:contract => "3NT", :declarer => "N", :vulnerable => "BOTH", :tricks => 3)
     assert_equal 0, score.game_bonus
+    score = Bridge::Score.new(:contract => "3SX", :declarer => "N", :vulnerable => "BOTH", :tricks => 9)
+    assert_equal 500, score.game_bonus
   end
 
   test "small slam bonus" do
@@ -141,6 +143,21 @@ class TestScorePoints < Test::Unit::TestCase
     assert_equal -200, score.not_vulnerable_undertrick_points
   end
 
+  test "overtrick points" do
+    score = Bridge::Score.new(:contract => "2S", :declarer => "N", :vulnerable => "NONE", :tricks => 10)
+    assert_equal 60, score.overtrick_points
+    score = Bridge::Score.new(:contract => "2SX", :declarer => "N", :vulnerable => "NONE", :tricks => 9)
+    assert_equal 100, score.overtrick_points
+    score = Bridge::Score.new(:contract => "2SXX", :declarer => "N", :vulnerable => "NONE", :tricks => 9)
+    assert_equal 200, score.overtrick_points
+    score = Bridge::Score.new(:contract => "2S", :declarer => "N", :vulnerable => "BOTH", :tricks => 9)
+    assert_equal 30, score.overtrick_points
+    score = Bridge::Score.new(:contract => "2SX", :declarer => "N", :vulnerable => "BOTH", :tricks => 9)
+    assert_equal 200, score.overtrick_points
+    score = Bridge::Score.new(:contract => "2SXX", :declarer => "N", :vulnerable => "BOTH", :tricks => 9)
+    assert_equal 400, score.overtrick_points
+  end
+
   test "return 90 points for 1S=" do
     score = Bridge::Score.new(:contract => "3S", :declarer => "N", :vulnerable => "NONE", :tricks => 9)
     assert_equal 140, score.points
@@ -154,5 +171,55 @@ class TestScorePoints < Test::Unit::TestCase
   test "return 80 points for 2D+2" do
     score = Bridge::Score.new(:contract => "2D", :declarer => "N", :vulnerable => "NONE", :tricks => 10)
     assert_equal 130, score.points
+  end
+
+  test "return 1400 points for 5CXX+1" do
+    score = Bridge::Score.new(:contract => "5CXX", :declarer => "N", :vulnerable => "BOTH", :tricks => 12)
+    assert_equal 1400, score.points
+  end
+
+  test "return 1700 points for 3NTX-7" do
+    score = Bridge::Score.new(:contract => "3NTX", :declarer => "N", :vulnerable => "NONE", :tricks => 2)
+    assert_equal -1700, score.points
+  end
+
+  test "return -7600 points for 7NTXX-13" do
+    score = Bridge::Score.new(:contract => "7NTXX", :declarer => "N", :vulnerable => "BOTH", :tricks => 0)
+    assert_equal -7600, score.points
+  end
+
+  test "return -7600 points for 7NT-13" do
+    score = Bridge::Score.new(:contract => "7NT", :declarer => "N", :vulnerable => "NONE", :tricks => 0)
+    assert_equal -650, score.points
+  end
+
+  test "return -1300 points for 7NT-13" do
+    score = Bridge::Score.new(:contract => "7NT", :declarer => "N", :vulnerable => "BOTH", :tricks => 0)
+    assert_equal -1300, score.points
+  end
+
+  test "return -3500 points for 7NTX-13" do
+    score = Bridge::Score.new(:contract => "7NTX", :declarer => "N", :vulnerable => "NONE", :tricks => 0)
+    assert_equal -3500, score.points
+  end
+
+  test "return -3800 points for 7NTX-13" do
+    score = Bridge::Score.new(:contract => "7NTX", :declarer => "N", :vulnerable => "BOTH", :tricks => 0)
+    assert_equal -3800, score.points
+  end
+
+  test "return -7000 points for 7NTXX-13" do
+    score = Bridge::Score.new(:contract => "7NTXX", :declarer => "N", :vulnerable => "NONE", :tricks => 0)
+    assert_equal -7000, score.points
+  end
+
+  test "return 1340 points for 1CX+6" do
+    score = Bridge::Score.new(:contract => "1CX", :declarer => "N", :vulnerable => "BOTH", :tricks => 13)
+    assert_equal 1340, score.points
+  end
+
+  test "return 740 points for 1CX+6" do
+    score = Bridge::Score.new(:contract => "1CX", :declarer => "N", :vulnerable => "NONE", :tricks => 13)
+    assert_equal 740, score.points
   end
 end

@@ -56,12 +56,7 @@ module Bridge
     end
 
     def points
-      made? ? (tricks_points + bonus) : undertrick_points
-    end
-
-    # TODO: count points for made conctract and overtricks (doubled, redoubled)
-    def tricks_points
-      first_trick_points + (contract.level.to_i - 1 + result) * single_trick_points
+      made? ? (made_contract_points + overtrick_points + bonus) : undertrick_points
     end
 
     def bonus
@@ -69,7 +64,7 @@ module Bridge
     end
 
     def game_bonus
-      if made? and tricks_points >= 100
+      if made? and made_contract_points >= 100
         vulnerable? ? 500 : 300
       elsif made?
         50
@@ -114,6 +109,31 @@ module Bridge
       vulnerable? ? vulnerable_undertrick_points : not_vulnerable_undertrick_points
     end
 
+    def made_contract_points
+      first_trick_points * modifier + (contract.level.to_i - 1) * single_trick_points * modifier
+    end
+
+    def overtrick_points
+      if doubled?
+        vulnerable? ? result * 200 : result * 100
+      elsif redoubled?
+        vulnerable? ? result * 400 : result * 200
+      else
+        result * single_trick_points
+      end
+    end
+
+    def not_vulnerable_overtrick_points
+      if doubled?
+        result * 200
+      elsif redoubled?
+        result * 400
+      else
+        result * single_trick_points
+      end
+    end
+
+    # TODO: do some refactoring
     def vulnerable_undertrick_points
       if !made?
         p = -100 * modifier
