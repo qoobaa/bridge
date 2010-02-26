@@ -35,4 +35,14 @@ class TestTrick < Test::Unit::TestCase
     trick = Bridge::Trick.new("S2", "HA", "CA", "DA")
     assert_equal Bridge::Card.new("S2"), trick.winner("S")
   end
+
+  test "is incomplete with 3 cards" do
+    trick = Bridge::Trick.new("S2", "HA", "CA")
+    assert trick.incomplete?
+  end
+
+  test "is incomplete with 4 cards" do
+    trick = Bridge::Trick.new("S2", "HA", "CA", "DA")
+    assert trick.complete?
+  end
 end

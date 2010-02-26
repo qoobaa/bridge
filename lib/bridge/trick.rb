@@ -11,6 +11,14 @@ module Bridge
       winner_in_suit(trump) || winner_in_suit(@suit)
     end
 
+    def complete?
+      @cards.size == 4
+    end
+
+    def incomplete?
+      !complete?
+    end
+
     private
 
     def winner_in_suit(suit)
