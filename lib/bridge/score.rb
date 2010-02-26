@@ -13,7 +13,7 @@ module Bridge
       @tricks = options[:tricks]
       @contract = Bridge::Bid.new(options[:contract])
       @vulnerable = options[:vulnerable] if Bridge::VULNERABILITIES.include?(options[:vulnerable].upcase)
-      @declarer = options[:declarer] if Bridge::DIRECTIONS.include?(options[:declarer])
+      @declarer = options[:declarer] if Bridge::DIRECTIONS.include?(options[:declarer].upcase)
     end
 
     def result
@@ -24,24 +24,24 @@ module Bridge
       contract.level.to_i + 6
     end
 
-    def minor?
-      ["C", "D"].include?(contract.suit)
-    end
-
-    def major?
-      not minor?
-    end
-
-    def nt?
-      contract.suit == "NT"
-    end
-
     def doubled?
       @modifier == 2
     end
 
     def redoubled?
       @modifier == 4
+    end
+
+    def made?
+      result >= 0
+    end
+
+    def small_slam?
+      contract.level.to_i == 6
+    end
+
+    def grand_slam?
+      contract.level.to_i == 7
     end
 
     def vulnerable?
@@ -56,21 +56,55 @@ module Bridge
     end
 
     def points
+      tricks_points + bonus
+    end
+
+    def tricks_points
       if result == 0
-        first_trick_points + (contract.level.to_i - 1) * trick_points
+        first_trick_points + (contract.level.to_i - 1) * single_trick_points
       elsif result > 0
-        first_trick_points + (contract.level.to_i - 1 + result) * trick_points
+        first_trick_points + (contract.level.to_i - 1 + result) * single_trick_points
       else
         result * undertrick
       end
     end
 
-    def first_trick_points
-      nt? ? 40 : trick_points
+    def bonus
+      game_bonus + grand_slam_bonus + small_slam_bonus
     end
 
-    def trick_points
-      minor? ? 20 : 30
+    def game_bonus
+      if made? and tricks_points >= 100
+        vulnerable? ? 500 : 300
+      elsif made?
+        50
+      else
+        0
+      end
+    end
+
+    def grand_slam_bonus
+      if made? and grand_slam?
+        vulnerable? ? 1500 : 1000
+      else
+        0
+      end
+    end
+
+    def small_slam_bonus
+      if made? and small_slam?
+        vulnerable? ? 750 : 500
+      else
+        0
+      end
+    end
+
+    def first_trick_points
+      contract.no_trump? ? 40 : single_trick_points
+    end
+
+    def single_trick_points
+      contract.minor? ? 20 : 30
     end
 
     def undertrick
