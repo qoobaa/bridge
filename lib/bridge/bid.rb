@@ -24,6 +24,19 @@ module Bridge
       suit if Bridge.trump?(suit)
     end
 
+    def minor?
+      Bridge.minor?(suit)
+    end
+
+    def major?
+      Bridge.major?(suit)
+    end
+
+    def no_trump?
+      Bridge.no_trump?(suit)
+    end
+    alias :nt? :no_trump?
+
     def pass?
       Bridge.pass?(bid)
     end

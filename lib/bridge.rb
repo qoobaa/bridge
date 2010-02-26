@@ -9,8 +9,12 @@ module Bridge
   # Card values - from A to 2
   CARD_VALUES = %w(A K Q J T 9 8 7 6 5 4 3 2)
 
+  MAJORS = %w(S H)
+
+  MINORS = %w(D C)
+
   # Trumps
-  TRUMPS = %w(S H D C)
+  TRUMPS = MAJORS + MINORS
 
   # No trump string
   NO_TRUMP = "NT"
@@ -91,5 +95,17 @@ module Bridge
 
   def self.trump?(string)
     TRUMPS.include?(string)
+  end
+
+  def self.minor?(string)
+    MINORS.include?(string)
+  end
+
+  def self.major?(string)
+    MAJORS.include?(string)
+  end
+
+  def self.no_trump?(string)
+    NO_TRUMP == string
   end
 end

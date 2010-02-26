@@ -20,6 +20,12 @@ module Bridge
       card[1]
     end
 
+    # Returns the honour card points
+    def honour_card_points
+      (%w(J Q K A).index(value) || -1) + 1
+    end
+    alias :hcp :honour_card_points
+
     # Compares the card with the other card
     def <=>(other)
       case other

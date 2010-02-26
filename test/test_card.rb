@@ -34,4 +34,24 @@ class TestCard < Test::Unit::TestCase
   test "ST is lower than SJ" do
     assert Bridge::Card.new("ST") < Bridge::Card.new("SJ")
   end
+
+  test "H2 has no hcp" do
+    assert_equal 0, Bridge::Card.new("H2").hcp
+  end
+
+  test "SJ has 1 hcp" do
+    assert_equal 1, Bridge::Card.new("SJ").hcp
+  end
+
+  test "CQ has 2 hcp" do
+    assert_equal 2, Bridge::Card.new("CQ").hcp
+  end
+
+  test "CK has 3 hcp" do
+    assert_equal 3, Bridge::Card.new("CK").hcp
+  end
+
+  test "DA has 4 hcp" do
+    assert_equal 4, Bridge::Card.new("DA").hcp
+  end
 end
