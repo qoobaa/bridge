@@ -20,13 +20,13 @@ class TestScore < Test::Unit::TestCase
 
   test "return modifier and contract when doubled" do
     score = Bridge::Score.new(:contract => "4SX", :declarer => "N", :tricks => 9)
-    assert_equal 2, score.modifier
+    assert_equal 2, score.instance_variable_get(:@modifier)
     assert_equal "4S", score.contract.to_s
   end
 
   test "return modifier and contract when redoubled" do
     score = Bridge::Score.new(:contract => "4SXX", :declarer => "N", :tricks => 9)
-    assert_equal 4, score.modifier
+    assert_equal 4, score.instance_variable_get(:@modifier)
     assert_equal "4S", score.contract.to_s
   end
 
