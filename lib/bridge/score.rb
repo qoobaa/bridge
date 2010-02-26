@@ -10,6 +10,7 @@ module Bridge
       options[:vulnerable] ||= "NONE"
       options[:contract].gsub!(/(X+)/, "")
       @modifier = $1.to_s.size * 2
+      @modifier = 1 if @modifier == 0
       @tricks = options[:tricks]
       @contract = Bridge::Bid.new(options[:contract])
       @vulnerable = options[:vulnerable] if Bridge::VULNERABILITIES.include?(options[:vulnerable].upcase)
@@ -65,12 +66,12 @@ module Bridge
       elsif result > 0
         first_trick_points + (contract.level.to_i - 1 + result) * single_trick_points
       else
-        result * undertrick
+        undertrick_points
       end
     end
 
     def bonus
-      game_bonus + grand_slam_bonus + small_slam_bonus
+      game_bonus + grand_slam_bonus + small_slam_bonus + doubled_bonus + redoubled_bonus
     end
 
     def game_bonus
@@ -99,6 +100,14 @@ module Bridge
       end
     end
 
+    def doubled_bonus
+      (made? and doubled?) ? 50 : 0
+    end
+
+    def redoubled_bonus
+      (made? and redoubled?) ? 100 : 0
+    end
+
     def first_trick_points
       contract.no_trump? ? 40 : single_trick_points
     end
@@ -107,9 +116,40 @@ module Bridge
       contract.minor? ? 20 : 30
     end
 
-    def undertrick
-      # vulnerable or not? doubled, redoubled?
-      50
+    def undertrick_points
+      vulnerable? ? vulnerable_undertrick_points : not_vulnerable_undertrick_points
+    end
+
+    def vulnerable_undertrick_points
+      if !made?
+        p = -100 * modifier
+        if result < -1
+          return p += (result + 1) * 300 if doubled?
+          return p += (result + 1) * 600 if redoubled?
+          return p += (result + 1) * 100
+        end
+        p
+      else
+        0
+      end
+    end
+
+    def not_vulnerable_undertrick_points
+      if !made?
+        p = -50 * modifier
+        if [-3, -2].include?(result)
+          return p += (result + 1) * 200 if doubled?
+          return p += (result + 1) * 400 if redoubled?
+          return p += (result + 1) * 50 if (!doubled? and !redoubled?)
+        elsif result < -3
+          return p += (-2 * 200 + (result + 3) * 300) if doubled?
+          return p += (-2 * 400 + (result + 3) * 600) if redoubled?
+          return p += (result + 1) * 50 if (!doubled? and !redoubled?)
+        end
+        p
+      else
+        0
+      end
     end
   end
 end

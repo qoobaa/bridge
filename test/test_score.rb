@@ -101,6 +101,46 @@ class TestScorePoints < Test::Unit::TestCase
     assert_equal 0, score.grand_slam_bonus
   end
 
+  test "doubled and redoubled cotract made bonus" do
+    score = Bridge::Score.new(:contract => "4SX", :declarer => "N", :tricks => 10)
+    assert_equal 50, score.doubled_bonus
+    score = Bridge::Score.new(:contract => "4SXX", :declarer => "N", :tricks => 10)
+    assert_equal 100, score.redoubled_bonus
+    assert_equal 0, score.doubled_bonus
+  end
+
+  test "vulnerable undertrick points" do
+    score = Bridge::Score.new(:contract => "4S", :declarer => "N", :vulnerable => "BOTH", :tricks => 9)
+    assert_equal -100, score.vulnerable_undertrick_points
+    score = Bridge::Score.new(:contract => "4SX", :declarer => "N", :vulnerable => "BOTH", :tricks => 9)
+    assert_equal -200, score.vulnerable_undertrick_points
+    score = Bridge::Score.new(:contract => "4SX", :declarer => "N", :vulnerable => "BOTH", :tricks => 7)
+    assert_equal -800, score.vulnerable_undertrick_points
+    score = Bridge::Score.new(:contract => "4SXX", :declarer => "N", :vulnerable => "BOTH", :tricks => 9)
+    assert_equal -400, score.vulnerable_undertrick_points
+    score = Bridge::Score.new(:contract => "4SXX", :declarer => "N", :vulnerable => "BOTH", :tricks => 7)
+    assert_equal -1600, score.vulnerable_undertrick_points
+  end
+
+  test "not vulnerable undertrick points" do
+    score = Bridge::Score.new(:contract => "4S", :declarer => "N", :vulnerable => "NONE", :tricks => 9)
+    assert_equal -50, score.not_vulnerable_undertrick_points
+    score = Bridge::Score.new(:contract => "4SX", :declarer => "N", :vulnerable => "NONE", :tricks => 9)
+    assert_equal -100, score.not_vulnerable_undertrick_points
+    score = Bridge::Score.new(:contract => "4SX", :declarer => "N", :vulnerable => "NONE", :tricks => 7)
+    assert_equal -500, score.not_vulnerable_undertrick_points
+    score = Bridge::Score.new(:contract => "4SXX", :declarer => "N", :vulnerable => "NONE", :tricks => 9)
+    assert_equal -200, score.not_vulnerable_undertrick_points
+    score = Bridge::Score.new(:contract => "4SXX", :declarer => "N", :vulnerable => "NONE", :tricks => 7)
+    assert_equal -1000, score.not_vulnerable_undertrick_points
+    score = Bridge::Score.new(:contract => "4SX", :declarer => "N", :vulnerable => "NONE", :tricks => 6)
+    assert_equal -800, score.not_vulnerable_undertrick_points
+    score = Bridge::Score.new(:contract => "4SXX", :declarer => "N", :vulnerable => "NONE", :tricks => 6)
+    assert_equal -1600, score.not_vulnerable_undertrick_points
+    score = Bridge::Score.new(:contract => "4S", :declarer => "N", :vulnerable => "NONE", :tricks => 6)
+    assert_equal -200, score.not_vulnerable_undertrick_points
+  end
+
   test "return 90 points for 1S=" do
     score = Bridge::Score.new(:contract => "3S", :declarer => "N", :vulnerable => "NONE", :tricks => 9)
     assert_equal 140, score.points
