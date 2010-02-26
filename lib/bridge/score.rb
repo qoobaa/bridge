@@ -9,8 +9,7 @@ module Bridge
     def initialize(options = {})
       options[:vulnerable] ||= "NONE"
       options[:contract].gsub!(/(X+)/, "")
-      @modifier = $1.to_s.size * 2
-      @modifier = 1 if @modifier == 0
+      @modifier = $1.nil? ? 1 : $1.to_s.size * 2
       @tricks = options[:tricks]
       @contract = Bridge::Bid.new(options[:contract])
       @vulnerable = options[:vulnerable] if Bridge::VULNERABILITIES.include?(options[:vulnerable].upcase)
@@ -57,17 +56,12 @@ module Bridge
     end
 
     def points
-      tricks_points + bonus
+      made? ? (tricks_points + bonus) : undertrick_points
     end
 
+    # TODO: count points for made conctract and overtricks (doubled, redoubled)
     def tricks_points
-      if result == 0
-        first_trick_points + (contract.level.to_i - 1) * single_trick_points
-      elsif result > 0
-        first_trick_points + (contract.level.to_i - 1 + result) * single_trick_points
-      else
-        undertrick_points
-      end
+      first_trick_points + (contract.level.to_i - 1 + result) * single_trick_points
     end
 
     def bonus
