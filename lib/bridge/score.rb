@@ -8,9 +8,7 @@ module Bridge
     #   Bridge::Score.new(:contract => "7SXX", :declarer => "S", :vulnerable => "BOTH", :tricks => "=")
     def initialize(options = {})
       options[:vulnerable] ||= "NONE"
-      options[:contract].gsub!(/(X+)/, "")
-      @modifier = $1.nil? ? 1 : $1.to_s.size * 2
-      @contract = Bridge::Bid.new(options[:contract])
+      @contract, @modifier = split_contract(options[:contract])
       @tricks = calculate_tricks(options[:tricks].to_s) if (0..13).to_a.include?(calculate_tricks(options[:tricks].to_s))
       @vulnerable = options[:vulnerable] if Bridge::VULNERABILITIES.include?(options[:vulnerable].upcase)
       @declarer = options[:declarer] if Bridge::DIRECTIONS.include?(options[:declarer].upcase)
@@ -171,6 +169,12 @@ module Bridge
       else
         tricks.to_i
       end
+    end
+
+    def split_contract(contract)
+      contract = contract.gsub(/(X+)/, "")
+      modifier = $1.nil? ? 1 : $1.to_s.size * 2
+      [Bridge::Bid.new(contract), modifier]
     end
   end
 end
