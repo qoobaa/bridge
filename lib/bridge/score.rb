@@ -5,13 +5,13 @@ module Bridge
     # Creates new score object
     #
     # ==== Example
-    #   Bridge::Score.new(:contract => "7SXX", :declarer => "S", :vulnerable => "BOTH", :tricks => 13)
+    #   Bridge::Score.new(:contract => "7SXX", :declarer => "S", :vulnerable => "BOTH", :tricks => "=")
     def initialize(options = {})
       options[:vulnerable] ||= "NONE"
       options[:contract].gsub!(/(X+)/, "")
       @modifier = $1.nil? ? 1 : $1.to_s.size * 2
-      @tricks = options[:tricks]
       @contract = Bridge::Bid.new(options[:contract])
+      @tricks = calculate_tricks(options[:tricks].to_s) if (0..13).to_a.include?(calculate_tricks(options[:tricks].to_s))
       @vulnerable = options[:vulnerable] if Bridge::VULNERABILITIES.include?(options[:vulnerable].upcase)
       @declarer = options[:declarer] if Bridge::DIRECTIONS.include?(options[:declarer].upcase)
     end
@@ -158,6 +158,18 @@ module Bridge
         p
       else
         0
+      end
+    end
+
+    def calculate_tricks(tricks)
+      if tricks =~ /\A\+\d\Z/
+        tricks_to_make_contract + tricks[1..1].to_i
+      elsif tricks =~ /\A-\d\Z/
+        tricks_to_make_contract - tricks[1..1].to_i
+      elsif tricks =~ /\A=\Z/
+        tricks_to_make_contract.to_i
+      else
+        tricks.to_i
       end
     end
   end

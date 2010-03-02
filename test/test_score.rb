@@ -64,6 +64,26 @@ class TestScore < Test::Unit::TestCase
     score = Bridge::Score.new(:contract => "6S", :declarer => "E", :vulnerable => "NS", :tricks => 10)
     assert_false score.vulnerable?
   end
+
+  test "calculate tricks with plus" do
+    score = Bridge::Score.new(:contract => "4S", :declarer => "N", :vulnerable => "BOTH", :tricks => "+1")
+    assert_equal 11, score.tricks
+  end
+
+  test "calculate tricks with minus" do
+    score = Bridge::Score.new(:contract => "4S", :declarer => "N", :vulnerable => "BOTH", :tricks => "-4")
+    assert_equal 6, score.tricks
+  end
+
+  test "calculate tricks with equal sign" do
+    score = Bridge::Score.new(:contract => "4S", :declarer => "N", :vulnerable => "BOTH", :tricks => "=")
+    assert_equal 10, score.tricks
+  end
+
+  test "not set tricks if value out of range" do
+    score = Bridge::Score.new(:contract => "4S", :declarer => "N", :vulnerable => "BOTH", :tricks => 15)
+    assert_nil score.tricks
+  end
 end
 
 class TestScorePoints < Test::Unit::TestCase
