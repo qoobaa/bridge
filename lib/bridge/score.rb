@@ -1,17 +1,15 @@
 module Bridge
   class Score
-    attr_reader :tricks, :contract, :declarer, :vulnerable
+    attr_reader :tricks, :contract, :vulnerable
 
     # Creates new score object
     #
     # ==== Example
-    #   Bridge::Score.new(:contract => "7SXX", :declarer => "S", :vulnerable => "BOTH", :tricks => "=")
+    #   Bridge::Score.new(:contract => "7SXX", :vulnerable => true, :tricks => "=")
     def initialize(options = {})
-      options[:vulnerable] ||= "NONE"
       @contract, @modifier = split_contract(options[:contract])
       @tricks = calculate_tricks(options[:tricks].to_s) if (0..13).to_a.include?(calculate_tricks(options[:tricks].to_s))
-      @vulnerable = options[:vulnerable] if Bridge::VULNERABILITIES.include?(options[:vulnerable].upcase)
-      @declarer = options[:declarer] if Bridge::DIRECTIONS.include?(options[:declarer].upcase)
+      @vulnerable = options[:vulnerable] || false
     end
 
     # Returns nr of overtricks or undertricks. 0 if contract was made without them
@@ -32,14 +30,7 @@ module Bridge
     #private
 
     def vulnerable?
-      case vulnerable
-      when "BOTH"
-        true
-      when "NONE"
-        false
-      else
-        vulnerable.split('').include?(declarer)
-      end
+      @vulnerable == true
     end
 
     def small_slam?
