@@ -33,14 +33,6 @@ module Bridge
       @vulnerable == true
     end
 
-    def small_slam?
-      contract.level.to_i == 6
-    end
-
-    def grand_slam?
-      contract.level.to_i == 7
-    end
-
     def tricks_to_make_contract
       contract.level.to_i + 6
     end
@@ -68,7 +60,7 @@ module Bridge
     end
 
     def grand_slam_bonus
-      if made? and grand_slam?
+      if made? and contract.grand_slam?
         vulnerable? ? 1500 : 1000
       else
         0
@@ -76,7 +68,7 @@ module Bridge
     end
 
     def small_slam_bonus
-      if made? and small_slam?
+      if made? and contract.small_slam?
         vulnerable? ? 750 : 500
       else
         0

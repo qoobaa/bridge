@@ -53,6 +53,14 @@ module Bridge
       Bridge.modifier?(bid)
     end
 
+    def small_slam?
+      level.to_i == 6
+    end
+
+    def grand_slam?
+      level.to_i == 7
+    end
+
     def contract?
       Bridge.contract?(bid)
     end

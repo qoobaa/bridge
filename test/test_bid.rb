@@ -124,4 +124,12 @@ class TestBid < Test::Unit::TestCase
   test "1NT is a nt bid" do
     assert Bridge::Bid.new("1NT").nt?
   end
+
+  test "6NT is a small slam" do
+    assert Bridge::Bid.new("6NT").small_slam?
+  end
+
+  test "7NT is a grand slam" do
+    assert Bridge::Bid.new("7NT").grand_slam?
+  end
 end
