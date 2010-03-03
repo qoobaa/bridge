@@ -116,4 +116,15 @@ module Bridge
   def self.no_trump?(string)
     NO_TRUMP == string
   end
+
+  def self.partner_of(direction)
+    return unless DIRECTIONS.include?(direction)
+    i = (DIRECTIONS.index(direction) + 2) % 4
+    DIRECTIONS[i]
+  end
+
+  def self.side_of(direction)
+    return unless DIRECTIONS.include?(direction)
+    [direction, partner_of(direction)].sort.join
+  end
 end
