@@ -2,6 +2,22 @@
 
 Contract bridge utils.
 
+== Score
+
+You can create Score object passing 3 arguments:
+  Bridge::Score.new(:contract => "6NTX", :vulnerable => true, :tricks => "=")
+
+Arguments:
+* :contract -- String, where first sign is level, second suit (C D H S NT) and optional double or redouble (X or XX)
+* :vulnerable -- Boolean, declarer is vulnerable? (default is false)
+* :tricks -- Integer or String, when Integer is passed it's number of tricks taken by declarer side, String can be relative to contract level i.e. "+1", "-2", "="
+
+Methods:
+* Score#made? -- Boolean
+* Score#result -- Integer, relative to contract level i.e. -1 (one down), 1 (overtrick), 0 (contract made)
+* Score#points -- Integer, calculated full value
+
+
 == Note on Patches/Pull Requests
 
 * Fork the project.
