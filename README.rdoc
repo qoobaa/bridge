@@ -17,6 +17,9 @@ Methods:
 * Score#result -- Integer, relative to contract level i.e. -1 (one down), 1 (overtrick), 0 (contract made)
 * Score#points -- Integer, calculated full value
 
+You can also ask for all possible contracts finished with given points:
+  Bridge::Score.with_points(980)
+  #=> ["1NTX-11-vulnerable", "2C/DX-12-vulnerable", "6H/S-12"]
 
 == Note on Patches/Pull Requests
 

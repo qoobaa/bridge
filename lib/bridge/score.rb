@@ -27,7 +27,13 @@ module Bridge
       made? ? (made_contract_points + overtrick_points + bonus) : undertrick_points
     end
 
-    #private
+    # Returns all possible contracts with given points
+    def self.with_points(points)
+      contracts = all_contracts.select { |contract, result| result == points }
+      contracts.respond_to?(:keys) ? contracts.keys.sort : contracts.map { |c| c.first }.sort # Ruby 1.8.* compatibility
+    end
+
+    # private
 
     def vulnerable?
       @vulnerable == true
@@ -158,6 +164,21 @@ module Bridge
       contract = contract.gsub(/(X+)/, "")
       modifier = $1.nil? ? 1 : $1.to_s.size * 2
       [Bridge::Bid.new(contract), modifier]
+    end
+
+    def self.all_contracts
+      result = {}
+      contracts = %w(1 2 3 4 5 6 7).inject([]) do |b, l|
+        b += ["H/S", "C/D", "NT"].map { |s| l + s }
+      end
+      (contracts + contracts.map { |c| c + "X" } + contracts.map { |c| c + "XX" }).each do |contract|
+        [true, false].each do |vulnerable|
+          (0..13).each do |tricks|
+            result["#{contract}-#{tricks}#{vulnerable == true ? "-vulnerable" : ""}"] = new(:contract => contract.sub("H/S", "S").sub("C/D", "C"), :tricks => tricks, :vulnerable => vulnerable).points
+          end
+        end
+      end
+      result
     end
   end
 end
