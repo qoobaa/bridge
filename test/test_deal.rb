@@ -120,4 +120,9 @@ class TestDeal < Test::Unit::TestCase
     assert_equal "W", deal.owner("H6")
     assert_equal "W", deal.owner("C9")
   end
+
+  test "to_hash returns hash" do
+    deal = Bridge::Deal.from_id(0)
+    assert_equal Hash, deal.to_hash.class
+  end
 end

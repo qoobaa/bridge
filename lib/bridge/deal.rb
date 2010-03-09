@@ -110,8 +110,13 @@ module Bridge
       end
     end
 
+    # Returns hash with hands
+    def to_hash
+      { "N" => n, "E" => e, "S" => s, "W" => w }
+    end
+
     def inspect
-      { "N" => n, "E" => e, "S" => s, "W" => w }.inspect
+      to_hash.inspect
     end
 
     def honour_card_points(side = nil)
