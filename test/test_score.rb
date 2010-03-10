@@ -38,11 +38,11 @@ class TestScore < Test::Unit::TestCase
   test "return made contract?" do
     score = Bridge::Score.new(:contract => "6S", :tricks => 9)
     assert_false score.made?
-    score = Bridge::Score.new(:contract => "3NT", :vulnerable => true, :tricks => 3)
+    score = Bridge::Score.new(:contract => "3NT", :tricks => 3)
     assert_false score.made?
-    score = Bridge::Score.new(:contract => "7NT", :vulnerable => true, :tricks => 13)
+    score = Bridge::Score.new(:contract => "7NT", :tricks => 13)
     assert score.made?
-    score = Bridge::Score.new(:contract => "3NT", :vulnerable => true, :tricks => 11)
+    score = Bridge::Score.new(:contract => "3NT", :tricks => 11)
     assert score.made?
   end
 
@@ -63,23 +63,30 @@ class TestScore < Test::Unit::TestCase
   end
 
   test "calculate tricks with plus" do
-    score = Bridge::Score.new(:contract => "4S", :vulnerable => true, :tricks => "+1")
+    score = Bridge::Score.new(:contract => "4S", :tricks => "+1")
     assert_equal 11, score.tricks
   end
 
   test "calculate tricks with minus" do
-    score = Bridge::Score.new(:contract => "4S", :vulnerable => true, :tricks => "-4")
+    score = Bridge::Score.new(:contract => "4S", :tricks => "-4")
     assert_equal 6, score.tricks
   end
 
   test "calculate tricks with equal sign" do
-    score = Bridge::Score.new(:contract => "4S", :vulnerable => true, :tricks => "=")
+    score = Bridge::Score.new(:contract => "4S", :tricks => "=")
     assert_equal 10, score.tricks
   end
 
-  test "not set tricks if value out of range" do
-    score = Bridge::Score.new(:contract => "4S", :vulnerable => true, :tricks => 15)
-    assert_nil score.tricks
+  test "15 is not a valid tricks argument" do
+    assert_raises(ArgumentError) do
+      Bridge::Score.new(:contract => "4S", :tricks => 15)
+    end
+  end
+
+  test "wrong string is not a valid tricks argument" do
+    assert_raises(ArgumentError) do
+      Bridge::Score.new(:contract => "4S", :tricks => "wrong")
+    end
   end
 end
 

@@ -8,7 +8,8 @@ module Bridge
     #   Bridge::Score.new(:contract => "7SXX", :vulnerable => true, :tricks => "=")
     def initialize(options = {})
       @contract, @modifier = split_contract(options[:contract])
-      @tricks = calculate_tricks(options[:tricks].to_s) if (0..13).to_a.include?(calculate_tricks(options[:tricks].to_s))
+      @tricks = calculate_tricks(options[:tricks])
+      raise ArgumentError, "invalid tricks: #{@tricks}" unless (0..13).include?(@tricks)
       @vulnerable = options[:vulnerable] || false
     end
 
@@ -149,13 +150,15 @@ module Bridge
     end
 
     def calculate_tricks(tricks)
-      if tricks =~ /\A\+\d\Z/
+      if tricks.kind_of? Numeric
+        tricks
+      elsif tricks =~ /\A\+\d\Z/
         tricks_to_make_contract + tricks[1..1].to_i
       elsif tricks =~ /\A-\d\Z/
         tricks_to_make_contract - tricks[1..1].to_i
       elsif tricks =~ /\A=\Z/
         tricks_to_make_contract.to_i
-      else
+      elsif tricks =~ /\A\d[0-3]?\Z/
         tricks.to_i
       end
     end
