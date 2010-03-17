@@ -112,7 +112,8 @@ module Bridge
 
     # Returns hash with hands
     def to_hash
-      { "N" => n, "E" => e, "S" => s, "W" => w }
+      # use map to be 1.8.6 compatible
+      { "N" => n.map{ |c| c.to_s }, "E" => e.map{ |c| c.to_s }, "S" => s.map{ |c| c.to_s }, "W" => w.map{ |c| c.to_s } }
     end
 
     def inspect

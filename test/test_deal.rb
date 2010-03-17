@@ -125,4 +125,9 @@ class TestDeal < Test::Unit::TestCase
     deal = Bridge::Deal.from_id(0)
     assert_equal Hash, deal.to_hash.class
   end
+
+  test "to_hash returns hash with arrays of strings" do
+    deal = Bridge::Deal.from_id(0)
+    assert_equal String, deal.to_hash["N"].first.class
+  end
 end
