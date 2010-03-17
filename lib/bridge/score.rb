@@ -157,7 +157,7 @@ module Bridge
       elsif tricks =~ /\A-\d\Z/
         tricks_to_make_contract - tricks[1..1].to_i
       elsif tricks =~ /\A=\Z/
-        tricks_to_make_contract.to_i
+        tricks_to_make_contract
       elsif tricks =~ /\A\d[0-3]?\Z/
         tricks.to_i
       end
@@ -171,8 +171,8 @@ module Bridge
 
     def self.all_contracts
       result = {}
-      contracts = %w(1 2 3 4 5 6 7).inject([]) do |b, l|
-        b += ["H/S", "C/D", "NT"].map { |s| l + s }
+      contracts = %w(1 2 3 4 5 6 7).inject([]) do |bids, level|
+        bids += ["H/S", "C/D", "NT"].map { |suit| level + suit }
       end
       (contracts + contracts.map { |c| c + "X" } + contracts.map { |c| c + "XX" }).each do |contract|
         [true, false].each do |vulnerable|

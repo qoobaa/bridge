@@ -2,6 +2,14 @@
 
 Contract bridge utils.
 
+== Bid
+
+== Card
+
+== Deal
+
+== Trick
+
 == Score
 
 You can create Score object passing 3 arguments:
