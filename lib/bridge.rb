@@ -118,13 +118,30 @@ module Bridge
   end
 
   def self.partner_of(direction)
-    return unless DIRECTIONS.include?(direction)
+    return unless direction?(direction)
     i = (DIRECTIONS.index(direction) + 2) % 4
     DIRECTIONS[i]
   end
 
   def self.side_of(direction)
-    return unless DIRECTIONS.include?(direction)
+    return unless direction?(direction)
     [direction, partner_of(direction)].sort.join
+  end
+
+  def self.next_direction(direction)
+    return DIRECTIONS.first if direction.nil?
+    return unless direction?(direction)
+    next_for_collection(DIRECTIONS, direction)
+  end
+
+  def self.next_vulnerable(vulnerable)
+    return VULNERABILITIES.first if vulnerable.nil?
+    return unless VULNERABILITIES.include?(vulnerable)
+    next_for_collection(VULNERABILITIES, vulnerable)
+  end
+
+  def self.next_for_collection(collection, current)
+    i = (collection.index(current) + 1) % collection.size
+    collection[i]
   end
 end
