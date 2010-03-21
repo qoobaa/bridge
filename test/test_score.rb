@@ -262,3 +262,61 @@ class TestScoreContracts < Test::Unit::TestCase
     assert_equal [], Bridge::Score.with_points(100)
   end
 end
+
+class TestRegexpScore < Test::Unit::TestCase
+  def setup
+    @regexp = Bridge::Score::REGEXP
+  end
+
+  test "match 1S+1" do
+    assert "1S+1" =~ @regexp
+  end
+
+  test "match 1NT=" do
+    assert "1NT=" =~ @regexp
+  end
+
+  test "not match 8S=" do
+    assert_nil "8S=" =~ @regexp
+  end
+
+  test "not match 1SXXX=" do
+    assert_nil "1SXXX=" =~ @regexp
+  end
+
+  test "not match 1S+7" do
+    assert_nil "1S+7" =~ @regexp
+  end
+
+  test "not match 1S-14" do
+    assert_nil "1S-14" =~ @regexp
+  end
+
+  test "not match 1S-21" do
+    assert_nil "1S-21" =~ @regexp
+  end
+
+  test "case sensitive" do
+    assert_nil "1s-1" =~ @regexp
+  end
+
+  test "return contract for 1NT=" do
+    result = "1NT=".match(@regexp)
+    assert_equal "1NT", RUBY_VERSION >= "1.9" ? result[:contract] : result[1]
+  end
+
+  test "return contract for 1NTXX=" do
+    result = "1NTXX=".match(@regexp)
+    assert_equal "1NTXX", RUBY_VERSION >= "1.9" ? result[:contract] : result[1]
+  end
+
+  test "return result for 1NT=" do
+    result = "1NT=".match(@regexp)
+    assert_equal "=", RUBY_VERSION >= "1.9" ? result[:result] : result[5]
+  end
+
+  test "return result for 1NT+2" do
+    result = "1NT+2".match(@regexp)
+    assert_equal "+2", RUBY_VERSION >= "1.9" ? result[:result] : result[5]
+  end
+end
