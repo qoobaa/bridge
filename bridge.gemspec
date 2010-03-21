@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{bridge}
-  s.version = "0.0.20"
+  s.version = "0.0.21"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jakub Kuźma"]
-  s.date = %q{2010-03-18}
+  s.date = %q{2010-03-22}
   s.description = %q{Useful contract bridge utilities - deal generator, id to deal and deal to id conversion}
   s.email = %q{qoobaa+github@gmail.com}
   s.extra_rdoc_files = [
@@ -44,13 +44,13 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.6}
   s.summary = %q{Contract bridge utilities}
   s.test_files = [
-    "test/helper.rb",
-     "test/test_bid.rb",
-     "test/test_card.rb",
+    "test/test_bridge.rb",
      "test/test_trick.rb",
      "test/test_deal.rb",
-     "test/test_bridge.rb",
-     "test/test_score.rb"
+     "test/helper.rb",
+     "test/test_score.rb",
+     "test/test_bid.rb",
+     "test/test_card.rb"
   ]
 
   if s.respond_to? :specification_version then
