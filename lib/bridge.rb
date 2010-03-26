@@ -54,7 +54,7 @@ module Bridge
   SIDES = %w{NS EW}
 
   # All possible vullnerabilites
-  VULNERABILITIES = %w{BOTH NONE} + SIDES
+  VULNERABILITIES = ["NONE", SIDES, "BOTH"].flatten
 
   def self.direction?(string)
     DIRECTIONS.include?(string)
@@ -131,16 +131,16 @@ module Bridge
   def self.next_direction(direction)
     return DIRECTIONS.first if direction.nil?
     return unless direction?(direction)
-    next_for_collection(DIRECTIONS, direction)
+    next_in_collection(DIRECTIONS, direction)
   end
 
   def self.next_vulnerable(vulnerable)
     return VULNERABILITIES.first if vulnerable.nil?
     return unless VULNERABILITIES.include?(vulnerable)
-    next_for_collection(VULNERABILITIES, vulnerable)
+    next_in_collection(VULNERABILITIES, vulnerable)
   end
 
-  def self.next_for_collection(collection, current)
+  def self.next_in_collection(collection, current)
     i = (collection.index(current) + 1) % collection.size
     collection[i]
   end

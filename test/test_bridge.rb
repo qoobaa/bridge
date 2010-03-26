@@ -36,6 +36,6 @@ class TestBridge < Test::Unit::TestCase
     assert_equal "NS", Bridge.next_vulnerable("NONE")
     assert_equal "EW", Bridge.next_vulnerable("NS")
     assert_equal "BOTH", Bridge.next_vulnerable("EW")
-    assert_equal "BOTH", Bridge.next_vulnerable(nil)
+    assert_equal "NONE", Bridge.next_vulnerable(nil)
   end
 end
