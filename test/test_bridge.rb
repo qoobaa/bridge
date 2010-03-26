@@ -31,11 +31,32 @@ class TestBridge < Test::Unit::TestCase
     assert_equal "N", Bridge.next_direction(nil)
   end
 
-  test "return next vulnerable" do
-    assert_equal "NONE", Bridge.next_vulnerable("BOTH")
-    assert_equal "NS", Bridge.next_vulnerable("NONE")
-    assert_equal "EW", Bridge.next_vulnerable("NS")
-    assert_equal "BOTH", Bridge.next_vulnerable("EW")
-    assert_equal "NONE", Bridge.next_vulnerable(nil)
+  test "return vulnerable for given deal nr" do
+    assert_equal "NONE", Bridge.vulnerable_in_deal(nil)
+
+    assert_equal "NONE", Bridge.vulnerable_in_deal(1)
+    assert_equal "NS", Bridge.vulnerable_in_deal(2)
+    assert_equal "EW", Bridge.vulnerable_in_deal(3)
+    assert_equal "BOTH", Bridge.vulnerable_in_deal(4)
+
+    assert_equal "NS", Bridge.vulnerable_in_deal(5)
+    assert_equal "EW", Bridge.vulnerable_in_deal(6)
+    assert_equal "BOTH", Bridge.vulnerable_in_deal(7)
+    assert_equal "NONE", Bridge.vulnerable_in_deal(8)
+
+    assert_equal "EW", Bridge.vulnerable_in_deal(9)
+    assert_equal "BOTH", Bridge.vulnerable_in_deal(10)
+    assert_equal "NONE", Bridge.vulnerable_in_deal(11)
+    assert_equal "NS", Bridge.vulnerable_in_deal(12)
+
+    assert_equal "BOTH", Bridge.vulnerable_in_deal(13)
+    assert_equal "NONE", Bridge.vulnerable_in_deal(14)
+    assert_equal "NS", Bridge.vulnerable_in_deal(15)
+    assert_equal "EW", Bridge.vulnerable_in_deal(16)
+
+    assert_equal "NONE", Bridge.vulnerable_in_deal(17)
+    assert_equal "NS", Bridge.vulnerable_in_deal(18)
+    assert_equal "EW", Bridge.vulnerable_in_deal(19)
+    assert_equal "BOTH", Bridge.vulnerable_in_deal(20)
   end
 end

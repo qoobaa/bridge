@@ -128,16 +128,19 @@ module Bridge
     [direction, partner_of(direction)].sort.join
   end
 
-  def self.next_direction(direction)
+  def self.next_direction(direction = nil)
     return DIRECTIONS.first if direction.nil?
     return unless direction?(direction)
     next_in_collection(DIRECTIONS, direction)
   end
 
-  def self.next_vulnerable(vulnerable)
-    return VULNERABILITIES.first if vulnerable.nil?
-    return unless VULNERABILITIES.include?(vulnerable)
-    next_in_collection(VULNERABILITIES, vulnerable)
+  def self.vulnerable_in_deal(deal = nil)
+    return VULNERABILITIES.first if deal.nil?
+    round = (deal - 1).div(4) % 4
+    index = (deal - 1) % 4
+    vulnerabilities = VULNERABILITIES.dup
+    shift = vulnerabilities.shift(round)
+    vulnerabilities.push(shift).flatten[index]
   end
 
   def self.next_in_collection(collection, current)
