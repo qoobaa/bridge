@@ -27,7 +27,7 @@ Methods:
 
 You can also ask for all possible contracts finished with given points:
   Bridge::Score.with_points(980)
-  #=> ["1NTX-11-vulnerable", "2C/DX-12-vulnerable", "6H/S-12"]
+  #=> ["1NTX+4v", "2C/DX+4v", "6H/S="]
 
 You can use regexp to check if contract with result is valid:
   Bridge::Score::REGEXP
