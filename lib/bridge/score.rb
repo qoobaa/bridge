@@ -183,10 +183,18 @@ module Bridge
       contracts = %w(1 2 3 4 5 6 7).inject([]) do |bids, level|
         bids += ["H/S", "C/D", "NT"].map { |suit| level + suit }
       end
-      (contracts + contracts.map { |c| c + "X" } + contracts.map { |c| c + "XX" }).each do |contract|
+      (contracts + contracts.map { |c| c + "X" } + contracts.map { |c| c + "XX" } ).each do |contract|
         [true, false].each do |vulnerable|
           (0..13).each do |tricks|
-            result["#{contract}-#{tricks}#{vulnerable == true ? "-vulnerable" : ""}"] = new(:contract => contract.sub("H/S", "S").sub("C/D", "C"), :tricks => tricks, :vulnerable => vulnerable).points
+            score = new(:contract => contract.sub("H/S", "S").sub("C/D", "C"), :tricks => tricks, :vulnerable => vulnerable)
+            if score.result > 0
+              taken = "+" << score.result.to_s
+            elsif score.result == 0
+              taken = "="
+            else
+              taken = score.result.to_s
+            end
+            result[contract + taken + (score.vulnerable? ? "v" : "")] = score.points
           end
         end
       end

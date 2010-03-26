@@ -254,11 +254,11 @@ class TestScoreContracts < Test::Unit::TestCase
   end
 
   test "return contracts for 1430 points" do
-    expected = ["1C/DXX-10-vulnerable", "1C/DXX-13", "6H/S-12-vulnerable"]
+    expected = ["1C/DXX+3v", "1C/DXX+6", "6H/S=v"]
     assert_equal expected, Bridge::Score.with_points(1430)
   end
 
-  test "return [] if not found" do
+  test "return no contracts if not found score with given points" do
     assert_equal [], Bridge::Score.with_points(100)
   end
 end
