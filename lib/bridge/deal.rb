@@ -133,6 +133,22 @@ module Bridge
     end
     alias :hcp :honour_card_points
 
+    def sort_by_color!(trump = nil)
+      sort_by_color(trump).each do |direction, hand|
+        self[direction] = hand
+      end
+      self
+    end
+
+    def sort_by_color(trump = nil)
+      DIRECTIONS.inject({}) do |sorted, direction|
+        splitted_colors = split_colors(direction)
+        sorted_colors = sort_colors(splitted_colors.keys, trump)
+        sorted[direction] = sorted_colors.inject([]) { |cards, color| cards << splitted_colors.delete(color) }.flatten
+        sorted
+      end
+    end
+
     private
 
     def must_be_direction!(string)
@@ -142,6 +158,29 @@ module Bridge
     def []=(direction, cards)
       must_be_direction!(direction)
       instance_variable_set("@#{direction.to_s.downcase}", cards)
+    end
+
+    def split_colors(direction)
+      TRUMPS.inject({}) do |colors, trump|
+        cards = self[direction].select { |card| card.suit == trump }
+        colors[trump] = cards unless cards.empty?
+        colors
+      end
+    end
+
+    def sort_colors(colors, trump = nil)
+      black = ["S", "C"] & colors
+      red = ["H", "D"] & colors
+      sorted = if black.delete(trump)
+        [trump] << red.shift << black.shift << red.shift
+      elsif red.delete(trump)
+        [trump] << black.shift << red.shift << black.shift
+      elsif black.size >= red.size
+        [black.shift] << red.shift << black.shift << red.shift
+      else
+        [red.shift] << black.shift << red.shift << black.shift
+      end
+      sorted.compact
     end
   end
 end
