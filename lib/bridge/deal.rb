@@ -144,7 +144,7 @@ module Bridge
       DIRECTIONS.inject({}) do |sorted, direction|
         splitted_colors = split_colors(direction)
         sorted_colors = sort_colors(splitted_colors.keys, trump)
-        sorted[direction] = sorted_colors.inject([]) { |cards, color| cards << splitted_colors.delete(color) }.flatten
+        sorted[direction] = sorted_colors.map { |color| splitted_colors.delete(color) }.flatten
         sorted
       end
     end
