@@ -3,6 +3,7 @@ require "bridge/card"
 require "bridge/deal"
 require "bridge/score"
 require "bridge/trick"
+require "bridge/version"
 
 module Bridge
   # Number of possible deals in bridge
