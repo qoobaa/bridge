@@ -142,10 +142,19 @@ module Bridge
 
     def sort_by_color(trump = nil)
       DIRECTIONS.inject({}) do |sorted, direction|
-        splitted_colors = split_colors(direction)
+        splitted_colors = cards_for(direction)
+        splitted_colors.reject! { |trump, cards| cards.empty? }
         sorted_colors = sort_colors(splitted_colors.keys, trump)
         sorted[direction] = sorted_colors.map { |color| splitted_colors.delete(color) }.flatten
         sorted
+      end
+    end
+
+    def cards_for(direction)
+      TRUMPS.inject({}) do |colors, trump|
+        cards = self[direction].select { |card| card.suit == trump }
+        colors[trump] = cards
+        colors
       end
     end
 
@@ -158,14 +167,6 @@ module Bridge
     def []=(direction, cards)
       must_be_direction!(direction)
       instance_variable_set("@#{direction.to_s.downcase}", cards)
-    end
-
-    def split_colors(direction)
-      TRUMPS.inject({}) do |colors, trump|
-        cards = self[direction].select { |card| card.suit == trump }
-        colors[trump] = cards unless cards.empty?
-        colors
-      end
     end
 
     def sort_colors(colors, trump = nil)

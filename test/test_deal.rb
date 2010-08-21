@@ -145,14 +145,15 @@ class TestDealSort < Test::Unit::TestCase
                  "H" => @deal.n.select { |c| c.suit == "H" },
                  "D" => @deal.n.select { |c| c.suit == "D" },
                  "C" => @deal.n.select { |c| c.suit == "C" } }
-    assert_equal expected, @deal.send(:split_colors, "N")
+    assert_equal expected, @deal.cards_for("N")
   end
 
   test "return colors as key only if cards are present on hand" do
     expected = { "S" => @deal.e.select { |c| c.suit == "S" },
+                 "H" => [],
                  "D" => @deal.e.select { |c| c.suit == "D" },
                  "C" => @deal.e.select { |c| c.suit == "C" } }
-    assert_equal expected, @deal.send(:split_colors, "E")
+    assert_equal expected, @deal.cards_for("E")
   end
 
   test "return sorted 4 colors" do
