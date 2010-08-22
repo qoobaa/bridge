@@ -27,6 +27,17 @@ module Bridge
       tricks - tricks_to_make_contract
     end
 
+    # Returns string with nr of tricks relative to contract level
+    def result_string
+      if result > 0
+        "+" << result.to_s
+      elsif result == 0
+        "="
+      else
+        result.to_s
+      end
+    end
+
     # Returns true if contract was made, false otherwise
     def made?
       result >= 0
@@ -187,14 +198,7 @@ module Bridge
         [true, false].each do |vulnerable|
           (0..13).each do |tricks|
             score = new(:contract => contract.sub("H/S", "S").sub("C/D", "C"), :tricks => tricks, :vulnerable => vulnerable)
-            if score.result > 0
-              taken = "+" << score.result.to_s
-            elsif score.result == 0
-              taken = "="
-            else
-              taken = score.result.to_s
-            end
-            result[contract + taken + (score.vulnerable? ? "v" : "")] = score.points
+            result[contract + score.result_string + (score.vulnerable? ? "v" : "")] = score.points
           end
         end
       end

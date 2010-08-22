@@ -54,6 +54,14 @@ class TestScore < Test::Unit::TestCase
     assert_equal -2, score.result
   end
 
+  test "return result string" do
+    assert_equal "+2", @score.result_string
+    score = Bridge::Score.new(:contract => "6S", :tricks => 12)
+    assert_equal "=", score.result_string
+    score = Bridge::Score.new(:contract => "6S", :tricks => 10)
+    assert_equal "-2", score.result_string
+  end
+
   test "return vulnerable" do
     assert_false @score.vulnerable?
     score = Bridge::Score.new(:contract => "6S", :vulnerable => true, :tricks => 12)
