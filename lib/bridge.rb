@@ -24,17 +24,17 @@ module Bridge
 
   # Array with card strings in the bridge deck (AKQJT98765432, four
   # suits). Contains "SA", "HT", etc.
-  DECK = TRUMPS.inject([]) do |d, s|
-    d += CARD_VALUES.map { |c| s + c }
-  end
+  DECK = TRUMPS.map do |suit|
+    CARD_VALUES.map { |card| suit + card }
+  end.flatten
 
   # Direction strings "N", "E", "S" and "W"
   DIRECTIONS = %w(N E S W)
 
   # Possible contracts in ascending order. Contains "1C", "6NT", etc.
-  CONTRACTS = %w(1 2 3 4 5 6 7).inject([]) do |b, l|
-    b += (TRUMPS.reverse + [NO_TRUMP]).map { |s| l + s }
-  end
+  CONTRACTS = %w(1 2 3 4 5 6 7).map do |level|
+    (TRUMPS.reverse + [NO_TRUMP]).map { |suit| level + suit }
+  end.flatten
 
   # Pass string
   PASS = "PASS"
@@ -62,7 +62,7 @@ module Bridge
   end
 
   def self.deal_id?(integer)
-    (0..DEALS - 1).include?(integer)
+    (0...DEALS).include?(integer)
   end
 
   def self.card?(string)
