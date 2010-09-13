@@ -35,6 +35,16 @@ You can use regexp to check if contract with result is valid:
 will match i.e.
   "1NT=", "2SX+1", "6NTXX-2"
 
+== Imp
+
+You can calculate how many IMP points you won by:
+  Bridge::Imp.new(:hcp => 25, :points => 420, :vulnerable => false).imps
+
+Arguments:
+* :hcp -- Integer (range between 20 and 40), which means how many honour card points has side
+* :vulnerable -- Boolean, side with given hcp is vulnerable?
+* :points -- Integer, the result at the end of board (can be calculated by Bridge::Score)
+
 == Note on Patches/Pull Requests
 
 * Fork the project.
