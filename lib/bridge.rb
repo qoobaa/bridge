@@ -1,5 +1,6 @@
 require "bridge/bid"
 require "bridge/card"
+require "bridge/constants"
 require "bridge/deal"
 require "bridge/imp"
 require "bridge/score"
@@ -7,57 +8,6 @@ require "bridge/trick"
 require "bridge/version"
 
 module Bridge
-  # Number of possible deals in bridge
-  DEALS = 53_644_737_765_488_792_839_237_440_000
-
-  # Card values - from A to 2
-  CARD_VALUES = %w(A K Q J T 9 8 7 6 5 4 3 2)
-
-  MAJORS = %w(S H)
-
-  MINORS = %w(D C)
-
-  # Trumps
-  TRUMPS = MAJORS + MINORS
-
-  # No trump string
-  NO_TRUMP = "NT"
-
-  # Array with card strings in the bridge deck (AKQJT98765432, four
-  # suits). Contains "SA", "HT", etc.
-  DECK = TRUMPS.map do |suit|
-    CARD_VALUES.map { |card| suit + card }
-  end.flatten
-
-  # Direction strings "N", "E", "S" and "W"
-  DIRECTIONS = %w(N E S W)
-
-  # Possible contracts in ascending order. Contains "1C", "6NT", etc.
-  CONTRACTS = %w(1 2 3 4 5 6 7).map do |level|
-    (TRUMPS.reverse + [NO_TRUMP]).map { |suit| level + suit }
-  end.flatten
-
-  # Pass string
-  PASS = "PASS"
-
-  # Double string
-  DOUBLE = "X"
-
-  # Redouble string
-  REDOUBLE = "XX"
-
-  # Modifier bids (double and redouble)
-  MODIFIERS = [DOUBLE, REDOUBLE]
-
-  # All possible bids (including contracts, modifiers and pass)
-  BIDS = CONTRACTS + MODIFIERS + [PASS]
-
-  # 2 sides
-  SIDES = %w{NS EW}
-
-  # All possible vullnerabilites
-  VULNERABILITIES = ["NONE", SIDES, "BOTH"].flatten
-
   def self.direction?(string)
     DIRECTIONS.include?(string)
   end
