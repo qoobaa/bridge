@@ -6,7 +6,7 @@ module Bridge::Points
     # Creates new Imp object
     #
     # ==== Example
-    #   Bridge::Imp.new(:hcp => 25, :points => 420, :vulnerable => true)
+    #   Bridge::Points::Chicago.new(:hcp => 25, :points => 420, :vulnerable => true)
     def initialize(options = {})
       @hcp = options[:hcp]
       raise ArgumentError, "Invalid hcp: #{hcp} - value should be between 20 and 40" unless (20..40).include?(hcp)
