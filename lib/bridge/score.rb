@@ -1,6 +1,7 @@
 module Bridge
   class Score
     attr_reader :tricks, :contract, :vulnerable
+    alias :vulnerable? :vulnerable
 
     # Checks contract with result, i.e. "1NTX-1", "2S=", "6SXX+1"
     # on Ruby >= 1.9 there are named groups :contract and :result
@@ -55,10 +56,6 @@ module Bridge
     end
 
     # private
-
-    def vulnerable?
-      @vulnerable == true
-    end
 
     def tricks_to_make_contract
       contract.level.to_i + 6

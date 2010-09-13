@@ -1,6 +1,7 @@
 require "bridge/bid"
 require "bridge/card"
 require "bridge/deal"
+require "bridge/imp"
 require "bridge/score"
 require "bridge/trick"
 require "bridge/version"
