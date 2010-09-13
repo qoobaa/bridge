@@ -29,6 +29,7 @@ module Bridge::Points
       IMPS.each do |range, imps|
         return (imps * sign) if range.include?(points_difference.abs)
       end
+      nil
     end
 
     private

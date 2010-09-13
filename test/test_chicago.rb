@@ -22,6 +22,16 @@ class TestChicago < Test::Unit::TestCase
     assert_equal 110, imp.points_to_make
   end
 
+  test "return nil when points are not in range" do
+    imp = Bridge::Points::Chicago.new(:hcp => 20, :points => 45)
+    assert_equal nil, imp.imps
+  end
+
+  test "return high value of imp range" do
+    imp = Bridge::Points::Chicago.new(:hcp => 22, :points => 110)
+    assert_equal 1, imp.imps
+  end
+
   test "return points to make when not vulnerable" do
     imp = Bridge::Points::Chicago.new(:hcp => 23, :points => 100, :vulnerable => false)
     assert_equal 110, imp.points_to_make
