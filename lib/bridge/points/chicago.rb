@@ -1,5 +1,5 @@
-module Bridge
-  class Imp
+module Bridge::Points
+  class Chicago
     attr_reader :hcp, :points, :vulnerable
     alias :vulnerable? :vulnerable
 
@@ -16,7 +16,7 @@ module Bridge
 
     # Returns points that side should make with given hcp
     def points_to_make
-      POINTS[hcp.to_s][vulnerable? ? 1 : 0]
+      POINTS[hcp][vulnerable? ? 1 : 0]
     end
 
     # Returns points score relative to hcp
@@ -27,7 +27,7 @@ module Bridge
     # Returns imps (negative or positive) based on given points
     def imps
       IMPS.each do |range, imps|
-        return (imps * sign) if eval(range).include?(points_difference.abs)
+        return (imps * sign) if range.include?(points_difference.abs)
       end
     end
 
