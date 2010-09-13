@@ -22,7 +22,17 @@ class TestDuplicate < Test::Unit::TestCase
   test "maximum points with non-unique values, without zero value" do
     max = Bridge::Points::Duplicate.new(430, 420, 420, 420, 300, 300).max
     assert_equal 10, max[430]
-    assert_equal 6, max[420]
-    assert_equal 1, max[300]
+    assert_equal  6, max[420]
+    assert_equal  1, max[300]
   end
+
+  # test "maximum percents" do
+  #   max_percents = Bridge::Points::Duplicate.new(50, 400, 110, 100, 110, 120, 50, 120, 140, 420, 110, 110, 110, 110, 50, 110, 140, 110).max_percents
+  #   notify max_percents.inspect
+  # end
+
+  # test "maximum percents 2" do
+  #   max_percents = Bridge::Points::Duplicate.new(-500, -650, -170, -170, -620, -620, -620).max_percents
+  #   notify max_percents.inspect
+  # end
 end
