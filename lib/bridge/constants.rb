@@ -77,7 +77,7 @@ module Bridge
         2500..2990 => 21,
         3000..3490 => 22,
         3500..3990 => 23,
-        4000..7600 => 24
+        4000..15200 => 24
       }
     class Chicago
       # values in array: [not-vulnerable, vulnerable]
