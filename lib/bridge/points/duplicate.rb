@@ -14,7 +14,7 @@ module Bridge::Points
 
     def average_score(number_to_skip = 1)
       scores = skipped_scores(number_to_skip)
-      (scores.inject(0.0) { |result, score| result += score} / scores.size).round(-1)
+      ((scores.inject(0.0) { |result, score| result += score} / scores.size) + 5).div(10) * 10
     end
 
     def maximum
@@ -25,10 +25,10 @@ module Bridge::Points
       end
     end
 
-    def maximum_in_percents(precision = 2)
+    def maximum_in_percents
       maximum.tap do |result|
         result.each do |score, points|
-          result[score] = (points * 100.0 / theoretical_maximum).round(precision)
+          result[score] = (points * 100.0 / theoretical_maximum)
         end
       end
     end
@@ -44,7 +44,7 @@ module Bridge::Points
     def cavendish
       {}.tap do |result|
         @scores.each do |score|
-          result[score] ||= (@scores.inject(0.0) { |points, s| points += Bridge::Points.imps(score - s) } / (@scores.size - 1)).round(1)
+          result[score] ||= @scores.inject(0.0) { |points, s| points += Bridge::Points.imps(score - s) } / (@scores.size - 1)
         end
       end
     end
