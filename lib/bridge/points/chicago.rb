@@ -26,16 +26,7 @@ module Bridge::Points
 
     # Returns imps (negative or positive) based on given points
     def imps
-      IMPS.each do |range, imps|
-        return (imps * sign) if range.include?(points_difference.abs)
-      end
-      nil
-    end
-
-    private
-
-    def sign
-      points >= 0 ? 1 : -1
+      Bridge::Points.imps(points_difference)
     end
   end
 end

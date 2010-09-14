@@ -1,29 +1,52 @@
 module Bridge::Points
   class Duplicate
     def initialize(*scores)
-      @scores = Array(scores).flatten
+      @scores = Array(scores).flatten.sort.reverse
     end
 
-    def max
-      @scores.inject({}) do |result, score|
-        result.tap do |r|
-          r[score] ||= @scores.inject(-1) { |points, s| points += (score <=> s) + 1 }
+    def theoretical_maximum
+      (@scores.size - 1) * 2
+    end
+
+    def skipped_scores(number = 1)
+      @scores[number..(-1 - number)]
+    end
+
+    def average_score(number_to_skip = 1)
+      scores = skipped_scores(number_to_skip)
+      (scores.inject(0.0) { |result, score| result += score} / scores.size).round(-1)
+    end
+
+    def maximum
+      {}.tap do |result|
+        @scores.each_with_index do |score, i|
+          result[score] ||= @scores[(i + 1)..-1].inject(0) { |points, s| points += (score <=> s) + 1 }
         end
       end
     end
 
-    # def max_percents
-    #   max.tap do |result|
-    #     result.each do |score, points|
-    #       result[score] = points * 100.0 / theoretical_max
-    #     end
-    #   end
-    # end
+    def maximum_in_percents(precision = 2)
+      maximum.tap do |result|
+        result.each do |score, points|
+          result[score] = (points * 100.0 / theoretical_maximum).round(precision)
+        end
+      end
+    end
 
-    # protected
+    def butler(number_to_skip = 1)
+      {}.tap do |result|
+        @scores.each do |score|
+          result[score] = Bridge::Points.imps(score - average_score(number_to_skip))
+        end
+      end
+    end
 
-    # def theoretical_max
-    #   (@scores.size - 1) * 2
-    # end
+    def cavendish
+      {}.tap do |result|
+        @scores.each do |score|
+          result[score] ||= (@scores.inject(0.0) { |points, s| points += Bridge::Points.imps(score - s) } / (@scores.size - 1)).round(1)
+        end
+      end
+    end
   end
 end
