@@ -143,7 +143,7 @@ module Bridge
     def sort_by_color(trump = nil)
       DIRECTIONS.inject({}) do |sorted, direction|
         splitted_colors = cards_for(direction)
-        splitted_colors.reject! { |trump, cards| cards.empty? }
+        splitted_colors.reject! { |color, cards| cards.empty? }
         sorted_colors = sort_colors(splitted_colors.keys, trump)
         sorted[direction] = sorted_colors.map { |color| splitted_colors.delete(color) }.flatten
         sorted

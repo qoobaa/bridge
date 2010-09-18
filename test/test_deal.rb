@@ -148,7 +148,7 @@ class TestDealSort < Test::Unit::TestCase
     assert_equal expected, @deal.cards_for("N")
   end
 
-  test "return colors as key only if cards are present on hand" do
+  test "return empty array if no cards" do
     expected = { "S" => @deal.e.select { |c| c.suit == "S" },
                  "H" => [],
                  "D" => @deal.e.select { |c| c.suit == "D" },
@@ -173,7 +173,7 @@ class TestDealSort < Test::Unit::TestCase
     assert_equal ["S", "H"], @deal.send(:sort_colors, ["S", "H"])
     assert_equal ["S", "D"], @deal.send(:sort_colors, ["S", "D"])
     assert_equal ["C", "D"], @deal.send(:sort_colors, ["D", "C"])
-    # assert_equal ["H", "C"], @deal.sort_colors(["H", "C"])
+    # assert_equal ["H", "C"], @deal.send(:sort_colors, ["H", "C"])
   end
 
   test "return sorted 4 colors with trump" do
@@ -217,7 +217,7 @@ class TestDealSort < Test::Unit::TestCase
     assert_equal expected, @deal.sort_by_color!("C").to_hash
   end
 
-  test "not modify hands if sorted by color without !" do
+  test "not modify hands if sorted by color without bang" do
     old_deal = @deal.to_hash
     @deal.sort_by_color
     assert_equal old_deal, @deal.to_hash
