@@ -1,4 +1,5 @@
 source :rubygems
 
+gemspec
+
 gem "rake"
-gem "test-unit", ">=2", :require => "test/unit"
