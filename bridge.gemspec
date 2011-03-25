@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.summary     = "Contract bridge utilities"
   s.description = "Useful contract bridge utilities - deal generator, id to deal and deal to id conversion"
   s.email       = "qoobaa+github@gmail.com"
-  s.homepage    = "http://github.com/qoobaa/bridge"
+  s.homepage    = "https://github.com/qoobaa/bridge"
   s.authors     = ["Jakub Kuźma", "Wojciech Wnętrzak"]
 
   s.required_rubygems_version = ">= 1.3.6"
