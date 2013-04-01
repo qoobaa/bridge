@@ -4,13 +4,8 @@ module Bridge
     alias :vulnerable? :vulnerable
 
     # Checks contract with result, i.e. "1NTX-1", "2S=", "6SXX+1"
-    # on Ruby >= 1.9 there are named groups :contract and :result
-    # on Ruby < 1.9 there are: contract on $1 and result on $5
-    if RUBY_VERSION >= "1.9"
-      REGEXP = Regexp.new %q{\A(?<contract>([1-7])([CDHS]|NT)(X{1,2})?)(?<result>=|\+[1-6]|-([1-9]|1[0-3]))\Z}
-    else
-      REGEXP = Regexp.new %q{\A(([1-7])([CDHS]|NT)(X{1,2})?)(=|\+[1-6]|-([1-9]|1[0-3]))\Z}
-    end
+    # There are named groups :contract and :result
+    REGEXP = Regexp.new %q{\A(?<contract>([1-7])([CDHS]|NT)(X{1,2})?)(?<result>=|\+[1-6]|-([1-9]|1[0-3]))\Z}
 
     # Creates new score object
     #
