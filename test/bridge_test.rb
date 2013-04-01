@@ -1,29 +1,29 @@
 require "helper"
 
-class TestBridge < Test::Unit::TestCase
-  test "negative number is not valid deal id" do
+describe Bridge do
+  it "negative number is not valid deal id" do
     assert_false Bridge.deal_id?(-1)
   end
 
-  test "number of possible bridge deals is not valid deal id" do
+  it "number of possible bridge deals is not valid deal id" do
     assert_false Bridge.deal_id?(Bridge::DEALS)
   end
 
-  test "return partner of direction" do
+  it "return partner of direction" do
     assert_equal "N", Bridge.partner_of("S")
     assert_equal "S", Bridge.partner_of("N")
     assert_equal "E", Bridge.partner_of("W")
     assert_equal "W", Bridge.partner_of("E")
   end
 
-  test "return side of direction" do
+  it "return side of direction" do
     assert_equal "NS", Bridge.side_of("S")
     assert_equal "NS", Bridge.side_of("N")
     assert_equal "EW", Bridge.side_of("W")
     assert_equal "EW", Bridge.side_of("E")
   end
 
-  test "return next direction" do
+  it "return next direction" do
     assert_equal "E", Bridge.next_direction("N")
     assert_equal "S", Bridge.next_direction("E")
     assert_equal "W", Bridge.next_direction("S")
@@ -31,7 +31,7 @@ class TestBridge < Test::Unit::TestCase
     assert_equal "N", Bridge.next_direction(nil)
   end
 
-  test "return vulnerable for given deal nr" do
+  it "return vulnerable for given deal nr" do
     assert_equal "NONE", Bridge.vulnerable_in_deal(nil)
 
     assert_equal "NONE", Bridge.vulnerable_in_deal(1)

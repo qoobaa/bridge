@@ -1,9 +1,9 @@
-require "test/unit"
+require "minitest/autorun"
 
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
-$LOAD_PATH.unshift(File.dirname(__FILE__))
 require "bridge"
 
-class Test::Unit::TestCase
-
+class MiniTest::Unit::TestCase
+  def assert_false(expected, message = nil)
+    assert_equal(false, expected, message)
+  end
 end

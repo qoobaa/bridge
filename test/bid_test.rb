@@ -1,20 +1,20 @@
 require "helper"
 
-class TestBid < Test::Unit::TestCase
-  test "pas is not a valid bid" do
+describe Bridge::Bid do
+  it "pas is not a valid bid" do
     assert_raises(ArgumentError) do
       Bridge::Bid.new("pas")
     end
   end
 
-  test "case doesn't matter in bid" do
+  it "case doesn't matter in bid" do
     Bridge::Bid.new("pass")
     Bridge::Bid.new("x")
     Bridge::Bid.new("xx")
     Bridge::Bid.new("1nt")
   end
 
-  test "pass is a valid bid" do
+  it "pass is a valid bid" do
     bid = Bridge::Bid.new("PASS")
     assert bid.pass?
     assert_false bid.double?
@@ -25,7 +25,7 @@ class TestBid < Test::Unit::TestCase
     assert_nil bid.suit
   end
 
-  test "double is a valid bid" do
+  it "double is a valid bid" do
     bid = Bridge::Bid.new("X")
     assert_false bid.pass?
     assert bid.double?
@@ -36,7 +36,7 @@ class TestBid < Test::Unit::TestCase
     assert_nil bid.suit
   end
 
-  test "redouble is a valid bid" do
+  it "redouble is a valid bid" do
     bid = Bridge::Bid.new("XX")
     assert_false bid.pass?
     assert_false bid.double?
@@ -47,7 +47,7 @@ class TestBid < Test::Unit::TestCase
     assert_nil bid.suit
   end
 
-  test "1H is a valid bid" do
+  it "1H is a valid bid" do
     bid = Bridge::Bid.new("1H")
     assert_false bid.pass?
     assert_false bid.double?
@@ -58,7 +58,7 @@ class TestBid < Test::Unit::TestCase
     assert_equal "H", bid.suit
   end
 
-  test "7NT is a valid bid" do
+  it "7NT is a valid bid" do
     bid = Bridge::Bid.new("7NT")
     assert_false bid.pass?
     assert_false bid.double?
@@ -69,67 +69,67 @@ class TestBid < Test::Unit::TestCase
     assert_equal "NT", bid.suit
   end
 
-  test "7NT is greater than 1C" do
+  it "7NT is greater than 1C" do
     assert Bridge::Bid.new("7NT") > Bridge::Bid.new("1C")
     assert_false Bridge::Bid.new("7NT") < Bridge::Bid.new("1C")
     assert_false Bridge::Bid.new("7NT") == Bridge::Bid.new("1C")
   end
 
-  test "1S is greater than 1H" do
+  it "1S is greater than 1H" do
     assert Bridge::Bid.new("1S") > Bridge::Bid.new("1H")
     assert_false Bridge::Bid.new("1S") < Bridge::Bid.new("1H")
     assert_false Bridge::Bid.new("1S") == Bridge::Bid.new("1H")
   end
 
-  test "comparison of PASS and 1S raises an error" do
+  it "comparison of PASS and 1S raises an error" do
     assert_raises(ArgumentError) do
       Bridge::Bid.new("PASS") > Bridge::Bid.new("1S")
     end
   end
 
-  test "comparison of X and PASS raises an error" do
+  it "comparison of X and PASS raises an error" do
     assert_raises(ArgumentError) do
       Bridge::Bid.new("X") > Bridge::Bid.new("PASS")
     end
   end
 
-  test "PASS and XX are not equal" do
-    assert_not_equal Bridge::Bid.new("PASS"), Bridge::Bid.new("XX")
+  it "PASS and XX are not equal" do
+    refute_equal Bridge::Bid.new("PASS"), Bridge::Bid.new("XX")
   end
 
-  test "1S returns S trump" do
+  it "1S returns S trump" do
     assert_equal "S", Bridge::Bid.new("1S").trump
   end
 
-  test "5NT returns nil trump" do
+  it "5NT returns nil trump" do
     assert_nil Bridge::Bid.new("5NT").trump
   end
 
-  test "1H is a major bid" do
+  it "1H is a major bid" do
     assert Bridge::Bid.new("1H").major?
   end
 
-  test "5S is a major bid" do
+  it "5S is a major bid" do
     assert Bridge::Bid.new("5S").major?
   end
 
-  test "2C is a minor bid" do
+  it "2C is a minor bid" do
     assert Bridge::Bid.new("2C").minor?
   end
 
-  test "6D is a minor bid" do
+  it "6D is a minor bid" do
     assert Bridge::Bid.new("6D").minor?
   end
 
-  test "1NT is a nt bid" do
+  it "1NT is a nt bid" do
     assert Bridge::Bid.new("1NT").nt?
   end
 
-  test "6NT is a small slam" do
+  it "6NT is a small slam" do
     assert Bridge::Bid.new("6NT").small_slam?
   end
 
-  test "7NT is a grand slam" do
+  it "7NT is a grand slam" do
     assert Bridge::Bid.new("7NT").grand_slam?
   end
 end
