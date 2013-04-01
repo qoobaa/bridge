@@ -1,6 +1,7 @@
+require "bridge/constants"
 require "bridge/bid"
 require "bridge/card"
-require "bridge/constants"
+require "bridge/auction"
 require "bridge/deal"
 require "bridge/points"
 require "bridge/points/chicago"
