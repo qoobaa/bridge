@@ -11,7 +11,9 @@ module Bridge
     end
 
     def contract
-      if last_contract = bids.reverse.find(&:contract?).to_s
+      if last_contract_index = bids.rindex(&:contract?)
+        modifier = bids[last_contract_index..-1].select(&:modifier?).last
+        bids[last_contract_index].to_s + modifier.to_s
       end
     end
 
