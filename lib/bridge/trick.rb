@@ -8,11 +8,11 @@ module Bridge
     end
 
     def winner(trump = nil)
-      winner_in_suit(trump) || winner_in_suit(@suit)
+      winner_in_suit(trump) || winner_in_suit(suit)
     end
 
     def complete?
-      @cards.size == 4
+      cards.size == 4
     end
 
     def incomplete?
@@ -22,7 +22,7 @@ module Bridge
     private
 
     def winner_in_suit(suit)
-      @cards.select { |c| c.suit == suit }.max
+      cards.select { |c| c.suit == suit }.max
     end
   end
 end

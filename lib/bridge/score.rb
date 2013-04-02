@@ -25,12 +25,10 @@ module Bridge
 
     # Returns string with nr of tricks relative to contract level
     def result_string
-      if result > 0
-        "+" << result.to_s
-      elsif result == 0
-        "="
-      else
-        result.to_s
+      case
+      when result > 0  then "+#{result}"
+      when result == 0 then "="
+      when result < 0  then result.to_s
       end
     end
 

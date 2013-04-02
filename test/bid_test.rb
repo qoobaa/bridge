@@ -8,51 +8,51 @@ describe Bridge::Bid do
   end
 
   it "case doesn't matter in bid" do
-    Bridge::Bid.new("pass")
-    Bridge::Bid.new("x")
-    Bridge::Bid.new("xx")
-    Bridge::Bid.new("1nt")
+    assert_equal "PASS", Bridge::Bid.new("pass").to_s
+    assert_equal "X", Bridge::Bid.new("x").to_s
+    assert_equal "XX", Bridge::Bid.new("xx").to_s
+    assert_equal "1NT", Bridge::Bid.new("1nt").to_s
   end
 
   it "pass is a valid bid" do
     bid = Bridge::Bid.new("PASS")
     assert bid.pass?
-    assert_false bid.double?
-    assert_false bid.redouble?
-    assert_false bid.modifier?
-    assert_false bid.contract?
+    refute bid.double?
+    refute bid.redouble?
+    refute bid.modifier?
+    refute bid.contract?
     assert_nil bid.level
     assert_nil bid.suit
   end
 
   it "double is a valid bid" do
     bid = Bridge::Bid.new("X")
-    assert_false bid.pass?
+    refute bid.pass?
     assert bid.double?
-    assert_false bid.redouble?
+    refute bid.redouble?
     assert bid.modifier?
-    assert_false bid.contract?
+    refute bid.contract?
     assert_nil bid.level
     assert_nil bid.suit
   end
 
   it "redouble is a valid bid" do
     bid = Bridge::Bid.new("XX")
-    assert_false bid.pass?
-    assert_false bid.double?
+    refute bid.pass?
+    refute bid.double?
     assert bid.redouble?
     assert bid.modifier?
-    assert_false bid.contract?
+    refute bid.contract?
     assert_nil bid.level
     assert_nil bid.suit
   end
 
   it "1H is a valid bid" do
     bid = Bridge::Bid.new("1H")
-    assert_false bid.pass?
-    assert_false bid.double?
-    assert_false bid.redouble?
-    assert_false bid.modifier?
+    refute bid.pass?
+    refute bid.double?
+    refute bid.redouble?
+    refute bid.modifier?
     assert bid.contract?
     assert_equal "1", bid.level
     assert_equal "H", bid.suit
@@ -60,10 +60,10 @@ describe Bridge::Bid do
 
   it "7NT is a valid bid" do
     bid = Bridge::Bid.new("7NT")
-    assert_false bid.pass?
-    assert_false bid.double?
-    assert_false bid.redouble?
-    assert_false bid.modifier?
+    refute bid.pass?
+    refute bid.double?
+    refute bid.redouble?
+    refute bid.modifier?
     assert bid.contract?
     assert_equal "7", bid.level
     assert_equal "NT", bid.suit
@@ -71,14 +71,14 @@ describe Bridge::Bid do
 
   it "7NT is greater than 1C" do
     assert Bridge::Bid.new("7NT") > Bridge::Bid.new("1C")
-    assert_false Bridge::Bid.new("7NT") < Bridge::Bid.new("1C")
-    assert_false Bridge::Bid.new("7NT") == Bridge::Bid.new("1C")
+    refute Bridge::Bid.new("7NT") < Bridge::Bid.new("1C")
+    refute Bridge::Bid.new("7NT") == Bridge::Bid.new("1C")
   end
 
   it "1S is greater than 1H" do
     assert Bridge::Bid.new("1S") > Bridge::Bid.new("1H")
-    assert_false Bridge::Bid.new("1S") < Bridge::Bid.new("1H")
-    assert_false Bridge::Bid.new("1S") == Bridge::Bid.new("1H")
+    refute Bridge::Bid.new("1S") < Bridge::Bid.new("1H")
+    refute Bridge::Bid.new("1S") == Bridge::Bid.new("1H")
   end
 
   it "comparison of PASS and 1S raises an error" do

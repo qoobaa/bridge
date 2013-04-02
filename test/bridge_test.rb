@@ -2,11 +2,11 @@ require "helper"
 
 describe Bridge do
   it "negative number is not valid deal id" do
-    assert_false Bridge.deal_id?(-1)
+    refute Bridge.deal_id?(-1)
   end
 
   it "number of possible bridge deals is not valid deal id" do
-    assert_false Bridge.deal_id?(Bridge::DEALS)
+    refute Bridge.deal_id?(Bridge::DEALS)
   end
 
   it "return partner of direction" do

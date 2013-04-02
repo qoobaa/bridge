@@ -6,9 +6,9 @@ describe Bridge::Score do
   end
 
   it "valid score" do
-    assert_false @score.contract.nil?
-    assert_false @score.vulnerable.nil?
-    assert_false @score.tricks.nil?
+    refute @score.contract.nil?
+    refute @score.vulnerable.nil?
+    refute @score.tricks.nil?
   end
 
   it "default vulnerable set to false" do
@@ -36,9 +36,9 @@ describe Bridge::Score do
 
   it "return made contract?" do
     score = Bridge::Score.new(:contract => "6S", :tricks => 9)
-    assert_false score.made?
+    refute score.made?
     score = Bridge::Score.new(:contract => "3NT", :tricks => 3)
-    assert_false score.made?
+    refute score.made?
     score = Bridge::Score.new(:contract => "7NT", :tricks => 13)
     assert score.made?
     score = Bridge::Score.new(:contract => "3NT", :tricks => 11)
@@ -62,11 +62,11 @@ describe Bridge::Score do
   end
 
   it "return vulnerable" do
-    assert_false @score.vulnerable?
+    refute @score.vulnerable?
     score = Bridge::Score.new(:contract => "6S", :vulnerable => true, :tricks => 12)
     assert score.vulnerable?
     score = Bridge::Score.new(:contract => "6S", :vulnerable => false, :tricks => 10)
-    assert_false score.vulnerable?
+    refute score.vulnerable?
   end
 
   it "calculate tricks with plus" do

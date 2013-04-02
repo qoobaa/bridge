@@ -12,7 +12,7 @@ module Bridge
 
     # Returns the level of the bid
     def level
-      bid[0..0] if contract?
+      bid[0] if contract?
     end
 
     # Returns the suit of the bid

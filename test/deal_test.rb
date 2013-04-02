@@ -65,7 +65,7 @@ describe Bridge::Deal do
                             "E" => %w(ST S9 S8 S7 S6 S5 S4 S3 S2 HJ HT H9 H8),
                             "S" => %w(H7 H6 H5 H4 H3 H2 DJ DT D9 D8 D7 D6 D5),
                             "W" => %w(D4 D3 D2 CJ CT C9 C8 C7 C6 C5 C4 C3 C2))
-    assert_false deal.valid?
+    refute deal.valid?
   end
 
   it "deal with different length hands is not valid deal" do
@@ -73,7 +73,7 @@ describe Bridge::Deal do
                             "E" => %w(S9 S8 S7 S6 S5 S4 S3 S2 HJ HT H9 H8),
                             "S" => %w(H7 H6 H5 H4 H3 H2 DJ DT D9 D8 D7 D6 D5),
                             "W" => %w(D4 D3 D2 CJ CT C9 C8 C7 C6 C5 C4 C3 C2))
-    assert_false deal.valid?
+    refute deal.valid?
   end
 
   it "random deal id is valid deal id" do

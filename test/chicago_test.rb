@@ -9,7 +9,7 @@ describe Bridge::Points::Chicago do
 
   it "set default vulnerable to false" do
     imp = Bridge::Points::Chicago.new(:hcp => 40, :points => -100)
-    assert_false imp.vulnerable
+    refute imp.vulnerable
   end
 
   it "return vulnerable boolean" do

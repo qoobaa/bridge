@@ -12,12 +12,12 @@ module Bridge
 
     # Returns the suit of the card
     def suit
-      card[0..0]
+      card[0]
     end
 
     # Returns the suit of the card
     def value
-      card[1..1]
+      card[1]
     end
 
     # Returns the honour card points

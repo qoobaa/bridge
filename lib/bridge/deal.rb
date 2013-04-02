@@ -1,5 +1,4 @@
 module Bridge
-
   # Class representing bridge deal
   class Deal
     include Comparable
@@ -112,8 +111,7 @@ module Bridge
 
     # Returns hash with hands
     def to_hash
-      # use map to be 1.8.6 compatible
-      { "N" => n.map{ |c| c.to_s }, "E" => e.map{ |c| c.to_s }, "S" => s.map{ |c| c.to_s }, "W" => w.map{ |c| c.to_s } }
+      {"N" => n.map(&:to_s), "E" => e.map(&:to_s), "S" => s.map(&:to_s), "W" => w.map(&:to_s)}
     end
 
     def inspect
@@ -121,9 +119,8 @@ module Bridge
     end
 
     def honour_card_points(side = nil)
-      hash = DIRECTIONS.inject({}) do |h, direction|
+      hash = DIRECTIONS.each_with_object({}) do |direction, h|
         h[direction] = self[direction].inject(0) { |sum, card| sum += card.honour_card_points }
-        h
       end
       if side
         side.to_s.upcase.split("").inject(0) { |sum, direction| sum += hash[direction] }
@@ -141,20 +138,18 @@ module Bridge
     end
 
     def sort_by_color(trump = nil)
-      DIRECTIONS.inject({}) do |sorted, direction|
+      DIRECTIONS.each_with_object({}) do |direction, sorted|
         splitted_colors = cards_for(direction)
         splitted_colors.reject! { |color, cards| cards.empty? }
         sorted_colors = sort_colors(splitted_colors.keys, trump)
         sorted[direction] = sorted_colors.map { |color| splitted_colors.delete(color) }.flatten
-        sorted
       end
     end
 
     def cards_for(direction)
-      TRUMPS.inject({}) do |colors, trump|
+      TRUMPS.each_with_object({}) do |trump, colors|
         cards = self[direction].select { |card| card.suit == trump }
         colors[trump] = cards
-        colors
       end
     end
 
