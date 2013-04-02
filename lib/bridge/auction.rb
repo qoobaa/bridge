@@ -1,8 +1,10 @@
 module Bridge
   class Auction
-    attr_reader :bids
+    attr_reader :dealer, :bids
 
-    def initialize(bids)
+    def initialize(dealer, bids)
+      raise ArgumentError, "invalid direction: #{dealer}" unless Bridge.direction?(dealer)
+      @dealer = dealer
       @bids = bids.map { |bid| Bid.new(bid.to_s) }
     end
 
@@ -13,7 +15,7 @@ module Bridge
     def contract
       if last_contract_index
         modifier = bids[last_contract_index..-1].select(&:modifier?).last
-        bids[last_contract_index].to_s + modifier.to_s
+        bids[last_contract_index].to_s + modifier.to_s + declarer
       end
     end
 
@@ -26,6 +28,12 @@ module Bridge
       when bid.double?   then double_allowed?
       when bid.redouble? then redouble_allowed?
       end
+    end
+
+    def declarer
+      direction = dealer
+      last_contract_index.times { direction = Bridge.next_direction(direction) }
+      direction
     end
 
     private
