@@ -36,6 +36,18 @@ module Bridge
       direction
     end
 
+    def directions
+      @directions ||= begin
+        directions = [dealer]
+        (bids.count - 1).times { directions << Bridge.next_direction(directions.last) }
+        directions
+      end
+    end
+
+    def next_direction
+      @next_direction ||= Bridge.next_direction(directions.last)
+    end
+
     private
 
     def last_contract_index
