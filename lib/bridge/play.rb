@@ -23,7 +23,7 @@ module Bridge
     def card_allowed?(card)
       card = Card.new(card.to_s)
       case
-      when finished?, cards.include?(card), !deal[next_direction].include?(card) then false
+      when !contract, cards.include?(card), !deal[next_direction].include?(card) then false
       when tricks.none?, tricks.last.complete? then true
       else (deal[next_direction] - cards).map(&:suit).uniq.include?(last_lead.suit) ? card.suit == last_lead.suit : true
       end

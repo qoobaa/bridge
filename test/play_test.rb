@@ -48,6 +48,11 @@ describe Bridge::Play do
   end
 
   describe "#card_allowed?" do
+    it "returns false if no contract" do
+      play = Bridge::Play.new(0, nil, [])
+      refute play.card_allowed?("SA")
+    end
+
     it "returns true if card is proper" do
       play = Bridge::Play.new(0, "7SN", ["HA", "D2", "C2"])
       assert play.card_allowed?("S2")
