@@ -38,6 +38,7 @@ module Bridge
 
     def directions
       @directions ||= begin
+        return [] if bids.none?
         directions = [dealer]
         (bids.count - 1).times { directions << Bridge.next_direction(directions.last) }
         directions
@@ -45,7 +46,7 @@ module Bridge
     end
 
     def next_direction
-      @next_direction ||= Bridge.next_direction(directions.last)
+      @next_direction ||= directions.none? ? dealer : Bridge.next_direction(directions.last)
     end
 
     private

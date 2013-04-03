@@ -7,14 +7,28 @@ describe Bridge::Auction do
     end
   end
 
-  it "returns directions" do
-    auction = Bridge::Auction.new("N", ["1NT", "PASS", "PASS", "X", "PASS"])
-    assert_equal ["N", "E", "S", "W", "N"], auction.directions
+  describe "directions" do
+    it "returns empty array when no bids" do
+      auction = Bridge::Auction.new("N", [])
+      assert_equal [], auction.directions
+    end
+
+    it "returns directions" do
+      auction = Bridge::Auction.new("N", ["1NT", "PASS", "PASS", "X", "PASS"])
+      assert_equal ["N", "E", "S", "W", "N"], auction.directions
+    end
   end
 
-  it "returns next direction" do
-    auction = Bridge::Auction.new("N", ["1NT", "PASS", "PASS", "X", "PASS"])
-    assert_equal "E", auction.next_direction
+  describe "#next_direction" do
+    it "returns next direction" do
+      auction = Bridge::Auction.new("N", ["1NT", "PASS", "PASS", "X", "PASS"])
+      assert_equal "E", auction.next_direction
+    end
+
+    it "returns dealer direction when no bids" do
+      auction = Bridge::Auction.new("S", [])
+      assert_equal "S", auction.next_direction
+    end
   end
 
   describe "#finished?" do
