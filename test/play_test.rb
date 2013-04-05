@@ -6,9 +6,12 @@ describe Bridge::Play do
     assert_equal Bridge::Deal, play.deal.class
   end
 
-  it "returns declarer" do
-    play = Bridge::Play.new(0, "7SN", [])
-    assert_equal "N", play.declarer
+  it "returns player positions" do
+    play = Bridge::Play.new(0, "7SS", [])
+    assert_equal "S", play.declarer
+    assert_equal "W", play.lho
+    assert_equal "N", play.dummy
+    assert_equal "E", play.rho
   end
 
   it "returns trump" do

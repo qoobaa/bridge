@@ -13,8 +13,22 @@ module Bridge
     end
 
     def declarer
-      contract[-1]
+      contract[-1] if contract
     end
+
+    def dummy
+      Bridge.partner_of(declarer) if contract
+    end
+
+    def left_hand_opponent
+      Bridge.next_direction(declarer) if contract
+    end
+    alias :lho :left_hand_opponent
+
+    def right_hand_opponent
+      Bridge.partner_of(left_hand_opponent) if contract
+    end
+    alias :rho :right_hand_opponent
 
     def trump
       contract[1] if Bridge.trump?(contract[1])
