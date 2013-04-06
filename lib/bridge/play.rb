@@ -50,7 +50,7 @@ module Bridge
     def next_direction
       case
       when tricks.none? then Bridge.next_direction(declarer)
-      when tricks.last.complete? then directions.last
+      when tricks.last.complete? then deal.owner(tricks.last.winner(trump))
       else Bridge.next_direction(directions.last)
       end
     end

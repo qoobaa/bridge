@@ -48,6 +48,11 @@ describe Bridge::Play do
       play = Bridge::Play.new(0, "7SN", ["HA", "D2", "C2"])
       assert_equal "N", play.next_direction
     end
+
+    it "returns last trick winner on next lead" do
+      play = Bridge::Play.new(0, "7HN", ["HA", "D2", "C2", "S2"])
+      assert_equal "E", play.next_direction
+    end
   end
 
   describe "#card_allowed?" do
