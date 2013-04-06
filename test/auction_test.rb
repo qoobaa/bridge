@@ -125,5 +125,9 @@ describe Bridge::Auction do
     it "returns false if bid is redouble on redoubled contract" do
       refute Bridge::Auction.new("N", ["1C", "X", "XX", "PASS"]).bid_allowed?("XX")
     end
+
+    it "returns true if 2 PASS in the auction" do
+      assert Bridge::Auction.new("N", ["PASS", "1D", "PASS", "PASS", "1H"]).bid_allowed?("PASS")
+    end
   end
 end

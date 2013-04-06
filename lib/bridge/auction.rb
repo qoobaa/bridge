@@ -9,7 +9,7 @@ module Bridge
     end
 
     def finished?
-      bids.length > 3 && bids[-3...-1].all?(&:pass?)
+      bids.length > 3 && bids[-3..-1].all?(&:pass?)
     end
 
     def contract
