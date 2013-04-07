@@ -55,6 +55,10 @@ module Bridge
       end
     end
 
+    def declarer_tricks_number
+      tricks.map { |trick| deal.owner(trick.winner(trump)) }.count { |direction| [declarer, dummy].include?(direction) }
+    end
+
     def deal
       @deal ||= Deal.from_id(deal_id)
     end

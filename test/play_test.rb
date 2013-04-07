@@ -33,6 +33,13 @@ describe Bridge::Play do
     assert_equal ["E", "S", "W", "N", "N"], play.directions
   end
 
+  it "returns declarer tricks number" do
+    cards = ["C5", "CA", "C4", "C3",
+      "C6", "C7", "H4", "CK",
+      "CJ", "C2", "C8", "S6"]
+    assert_equal 2, Bridge::Play.new(636839108127179982824423290, "1SN", cards).declarer_tricks_number
+  end
+
   describe "#next_direction" do
     it "returns direction next to dealer if first lead" do
       play = Bridge::Play.new(0, "7SN", [])
@@ -77,7 +84,7 @@ describe Bridge::Play do
     end
 
     it "returns true for other suit if no more cards in first card suit" do
-      play = Bridge::Play.new(636839108127179982824423290, "1SN", ["C5", "CA", "C4", "C3", "C8"])
+      play = Bridge::Play.new(636839108127179982824423290, "1SN", ["C5", "CA", "C4", "C3", "C6", "C7"])
       assert play.card_allowed?("S6")
     end
 
