@@ -1,26 +1,20 @@
 module Bridge
   class Score
-    attr_reader :tricks, :contract, :vulnerable
-    alias :vulnerable? :vulnerable
-
-    # Checks contract with result, i.e. "1NTX-1", "2S=", "6SXX+1"
-    # There are named groups :contract and :result
-    REGEXP = Regexp.new %q{\A(?<contract>([1-7])([CDHS]|NT)(X{1,2})?)(?<result>=|\+[1-6]|-([1-9]|1[0-3]))\Z}
+    attr_reader :contract, :vulnerable, :tricks_number
 
     # Creates new score object
     #
     # ==== Example
-    #   Bridge::Score.new(:contract => "7SXX", :vulnerable => true, :tricks => "=")
-    def initialize(options = {})
-      @contract, @modifier = split_contract(options[:contract])
-      @tricks = calculate_tricks(options[:tricks])
-      raise ArgumentError, "invalid tricks: #{@tricks}" unless (0..13).include?(@tricks)
-      @vulnerable = options[:vulnerable] || false
+    #   Bridge::Score.new("7SXXN", "NS", 0)
+    def initialize(contract, vulnerable, tricks)
+      @contract      = contract
+      @vulnerable    = vulnerable
+      @tricks_number = calculate_tricks(tricks)
     end
 
     # Returns nr of overtricks or undertricks. 0 if contract was made without them
     def result
-      tricks - tricks_to_make_contract
+      tricks_number - tricks_to_make_contract
     end
 
     # Returns string with nr of tricks relative to contract level
@@ -50,16 +44,41 @@ module Bridge
 
     # private
 
+    def contract_bid
+      @contract_bid ||= Bid.new(contract.match(Bridge::CONTRACT_REGEXP)[:bid])
+    end
+
+    def declarer
+      @declarer ||= contract.match(Bridge::CONTRACT_REGEXP)[:direction]
+    end
+
     def tricks_to_make_contract
-      contract.level.to_i + 6
+      contract_bid.level.to_i + 6
+    end
+
+    def vulnerable?
+      case vulnerable
+      when "BOTH" then true
+      when "NONE" then false
+      else
+        vulnerable.split("").include?(declarer)
+      end
     end
 
     def doubled?
-      @modifier == 2
+      modifier == 2
     end
 
     def redoubled?
-      @modifier == 4
+      modifier == 4
+    end
+
+    def modifier
+      case contract.match(Bridge::CONTRACT_REGEXP)[:modifier]
+      when nil then 1
+      when "X" then 2
+      when "XX" then 4
+      end
     end
 
     def bonus
@@ -77,7 +96,7 @@ module Bridge
     end
 
     def grand_slam_bonus
-      if made? and contract.grand_slam?
+      if made? and contract_bid.grand_slam?
         vulnerable? ? 1500 : 1000
       else
         0
@@ -85,7 +104,7 @@ module Bridge
     end
 
     def small_slam_bonus
-      if made? and contract.small_slam?
+      if made? and contract_bid.small_slam?
         vulnerable? ? 750 : 500
       else
         0
@@ -101,11 +120,11 @@ module Bridge
     end
 
     def first_trick_points
-      contract.no_trump? ? 40 : single_trick_points
+      contract_bid.no_trump? ? 40 : single_trick_points
     end
 
     def single_trick_points
-      contract.minor? ? 20 : 30
+      contract_bid.minor? ? 20 : 30
     end
 
     def undertrick_points
@@ -113,7 +132,7 @@ module Bridge
     end
 
     def made_contract_points
-      first_trick_points * @modifier + (contract.level.to_i - 1) * single_trick_points * @modifier
+      first_trick_points * modifier + (contract_bid.level.to_i - 1) * single_trick_points * modifier
     end
 
     def overtrick_points
@@ -129,7 +148,7 @@ module Bridge
     # TODO: do some refactoring
     def vulnerable_undertrick_points
       if !made?
-        p = -100 * @modifier
+        p = -100 * modifier
         if result < -1
           return p += (result + 1) * 300 if doubled?
           return p += (result + 1) * 600 if redoubled?
@@ -143,7 +162,7 @@ module Bridge
 
     def not_vulnerable_undertrick_points
       if !made?
-        p = -50 * @modifier
+        p = -50 * modifier
         if [-3, -2].include?(result)
           return p += (result + 1) * 200 if doubled?
           return p += (result + 1) * 400 if redoubled?
@@ -173,21 +192,15 @@ module Bridge
       end
     end
 
-    def split_contract(contract)
-      contract = contract.gsub(/(X+)/, "")
-      modifier = $1.nil? ? 1 : $1.to_s.size * 2
-      [Bridge::Bid.new(contract), modifier]
-    end
-
     def self.all_contracts
       result = {}
       contracts = %w(1 2 3 4 5 6 7).inject([]) do |bids, level|
         bids += ["H/S", "C/D", "NT"].map { |suit| level + suit }
       end
       (contracts + contracts.map { |c| c + "X" } + contracts.map { |c| c + "XX" } ).each do |contract|
-        [true, false].each do |vulnerable|
+        ["BOTH", "NONE"].each do |vulnerable|
           (0..13).each do |tricks|
-            score = new(:contract => contract.sub("H/S", "S").sub("C/D", "C"), :tricks => tricks, :vulnerable => vulnerable)
+            score = new(contract.sub("H/S", "S").sub("C/D", "C").sub("NT", "NT") + "N", vulnerable, tricks)
             result[contract + score.result_string + (score.vulnerable? ? "v" : "")] = score.points
           end
         end

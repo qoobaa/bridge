@@ -50,6 +50,24 @@ module Bridge
   # All possible vullnerabilites
   VULNERABILITIES = ["NONE", SIDES, "BOTH"].flatten
 
+  # Matches 2S, 7NT, 1C
+  BID_REGEXP = Regexp.new %q{(?<bid>([1-7])([CDHS]|NT))}
+
+  # Matches X, XX
+  MODIFIER_REGEXP = Regexp.new %q{(?<modifier>(X{1,2}))}
+
+  # Matches X, XX
+  DIRECTION_REGEXP = Regexp.new %q{(?<direction>([NESW]))}
+
+  # Matches =, -12, +4
+  RESULT_REGEXP = Regexp.new %q{(?<result>(=|\+[1-6]|-\d{1,2}))}
+
+  # Matches 7NTXE, 1SXXS
+  CONTRACT_REGEXP = Regexp.new %Q{(?<contract>#{BID_REGEXP}#{MODIFIER_REGEXP}?#{DIRECTION_REGEXP})}
+
+  # Matches 1SE=, 7NTXXS-2
+  SCORE_REGEXP = Regexp.new %Q{(?<score>#{CONTRACT_REGEXP}#{RESULT_REGEXP})}
+
   module Points
     IMPS =
       {
