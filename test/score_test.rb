@@ -5,12 +5,6 @@ describe Bridge::Score do
     @score = Bridge::Score.new("1SN", "NONE", 9)
   end
 
-  it "return tricks to make contract" do
-    assert_equal 7, @score.tricks_to_make_contract
-    score = Bridge::Score.new("6SN", "NONE", 9)
-    assert_equal 12, score.tricks_to_make_contract
-  end
-
   it "return made contract?" do
     score = Bridge::Score.new("6SN", "NONE", 9)
     refute score.made?
@@ -63,92 +57,79 @@ describe Bridge::Score do
   describe "points" do
     it "game bonus" do
       score = Bridge::Score.new("3SN", "NONE", 9)
-      assert_equal 50, score.game_bonus
+      assert_equal 140, score.points
       score = Bridge::Score.new("4SN", "NONE", 10)
-      assert_equal 300, score.game_bonus
-      score = Bridge::Score.new("6SN", "NONE", 12)
-      assert_equal 300, score.game_bonus
+      assert_equal 420, score.points
       score = Bridge::Score.new("3NTN", "BOTH", 9)
-      assert_equal 500, score.game_bonus
-      score = Bridge::Score.new("3NTN", "BOTH", 3)
-      assert_equal 0, score.game_bonus
-      score = Bridge::Score.new("3SXN", "BOTH", 9)
-      assert_equal 500, score.game_bonus
+      assert_equal 600, score.points
     end
 
     it "small slam bonus" do
       score = Bridge::Score.new("6SN", "NONE", 12)
-      assert_equal 500, score.small_slam_bonus
+      assert_equal 980, score.points
       score = Bridge::Score.new("6SN", "BOTH", 12)
-      assert_equal 750, score.small_slam_bonus
-      score = Bridge::Score.new("6SN", "BOTH", 10)
-      assert_equal 0, score.small_slam_bonus
+      assert_equal 1430, score.points
     end
 
     it "grand slam bonus" do
       score = Bridge::Score.new("7SN", "NONE", 13)
-      assert_equal 1000, score.grand_slam_bonus
+      assert_equal 1510, score.points
       score = Bridge::Score.new("7SN", "BOTH", 13)
-      assert_equal 1500, score.grand_slam_bonus
-      score = Bridge::Score.new("7SN", "BOTH", 11)
-      assert_equal 0, score.grand_slam_bonus
-      score = Bridge::Score.new("6SN", "BOTH", 13)
-      assert_equal 0, score.grand_slam_bonus
+      assert_equal 2210, score.points
     end
 
     it "doubled and redoubled cotract made bonus" do
       score = Bridge::Score.new("4SXN", "NONE", 10)
-      assert_equal 50, score.doubled_bonus
+      assert_equal 590, score.points
       score = Bridge::Score.new("4SXXN", "NONE", 10)
-      assert_equal 100, score.redoubled_bonus
-      assert_equal 0, score.doubled_bonus
+      assert_equal 880, score.points
     end
 
     it "vulnerable undertrick points" do
       score = Bridge::Score.new("4SN", "BOTH", 9)
-      assert_equal -100, score.vulnerable_undertrick_points
+      assert_equal -100, score.points
       score = Bridge::Score.new("4SXN", "BOTH", 9)
-      assert_equal -200, score.vulnerable_undertrick_points
+      assert_equal -200, score.points
       score = Bridge::Score.new("4SXN", "BOTH", 7)
-      assert_equal -800, score.vulnerable_undertrick_points
+      assert_equal -800, score.points
       score = Bridge::Score.new("4SXXN", "BOTH", 9)
-      assert_equal -400, score.vulnerable_undertrick_points
+      assert_equal -400, score.points
       score = Bridge::Score.new("4SXXN", "BOTH", 7)
-      assert_equal -1600, score.vulnerable_undertrick_points
+      assert_equal -1600, score.points
     end
 
     it "not vulnerable undertrick points" do
       score = Bridge::Score.new("4SN", "NONE", 9)
-      assert_equal -50, score.not_vulnerable_undertrick_points
+      assert_equal -50, score.points
       score = Bridge::Score.new("4SXN", "NONE", 9)
-      assert_equal -100, score.not_vulnerable_undertrick_points
+      assert_equal -100, score.points
       score = Bridge::Score.new("4SXN", "NONE", 7)
-      assert_equal -500, score.not_vulnerable_undertrick_points
+      assert_equal -500, score.points
       score = Bridge::Score.new("4SXXN", "NONE", 9)
-      assert_equal -200, score.not_vulnerable_undertrick_points
+      assert_equal -200, score.points
       score = Bridge::Score.new("4SXXN", "NONE", 7)
-      assert_equal -1000, score.not_vulnerable_undertrick_points
+      assert_equal -1000, score.points
       score = Bridge::Score.new("4SXN", "NONE", 6)
-      assert_equal -800, score.not_vulnerable_undertrick_points
+      assert_equal -800, score.points
       score = Bridge::Score.new("4SXXN", "NONE", 6)
-      assert_equal -1600, score.not_vulnerable_undertrick_points
+      assert_equal -1600, score.points
       score = Bridge::Score.new("4SN", "NONE", 6)
-      assert_equal -200, score.not_vulnerable_undertrick_points
+      assert_equal -200, score.points
     end
 
     it "overtrick points" do
       score = Bridge::Score.new("2SN", "NONE", 10)
-      assert_equal 60, score.overtrick_points
+      assert_equal 170, score.points
       score = Bridge::Score.new("2SXN", "NONE", 9)
-      assert_equal 100, score.overtrick_points
+      assert_equal 570, score.points
       score = Bridge::Score.new("2SXXN", "NONE", 9)
-      assert_equal 200, score.overtrick_points
+      assert_equal 840, score.points
       score = Bridge::Score.new("2SN", "BOTH", 9)
-      assert_equal 30, score.overtrick_points
+      assert_equal 140, score.points
       score = Bridge::Score.new("2SXN", "BOTH", 9)
-      assert_equal 200, score.overtrick_points
+      assert_equal 870, score.points
       score = Bridge::Score.new("2SXXN", "BOTH", 9)
-      assert_equal 400, score.overtrick_points
+      assert_equal 1240, score.points
     end
 
     it "return 90 points for 1S=" do

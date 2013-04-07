@@ -12,6 +12,11 @@ module Bridge
       @tricks_number = calculate_tricks(tricks)
     end
 
+    # Returns all possible contracts with given points
+    def self.with_points(points)
+      all_contracts.select { |contract, result| result == points }.keys.sort
+    end
+
     # Returns nr of overtricks or undertricks. 0 if contract was made without them
     def result
       tricks_number - tricks_to_make_contract
@@ -36,13 +41,17 @@ module Bridge
       made? ? (made_contract_points + overtrick_points + bonus) : undertrick_points
     end
 
-    # Returns all possible contracts with given points
-    def self.with_points(points)
-      contracts = all_contracts.select { |contract, result| result == points }
-      contracts.respond_to?(:keys) ? contracts.keys.sort : contracts.map { |c| c.first }.sort # Ruby 1.8.* compatibility
+    # Returns if declarer side is vulnerable
+    def vulnerable?
+      case vulnerable
+      when "BOTH" then true
+      when "NONE" then false
+      else
+        vulnerable.split("").include?(declarer)
+      end
     end
 
-    # private
+    private
 
     def contract_bid
       @contract_bid ||= Bid.new(contract.match(Bridge::CONTRACT_REGEXP)[:bid])
@@ -53,16 +62,7 @@ module Bridge
     end
 
     def tricks_to_make_contract
-      contract_bid.level.to_i + 6
-    end
-
-    def vulnerable?
-      case vulnerable
-      when "BOTH" then true
-      when "NONE" then false
-      else
-        vulnerable.split("").include?(declarer)
-      end
+      @tricks_to_make_contract ||= contract_bid.level.to_i + 6
     end
 
     def doubled?
@@ -75,8 +75,8 @@ module Bridge
 
     def modifier
       case contract.match(Bridge::CONTRACT_REGEXP)[:modifier]
-      when nil then 1
-      when "X" then 2
+      when nil  then 1
+      when "X"  then 2
       when "XX" then 4
       end
     end
